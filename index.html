@@ -1,0 +1,4829 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AvtoRent — O‘zbekistondagi Avtomobillar Ijarasi Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================================
+       CSS VARIABLES & RESET
+       Uzum Market inspired clean marketplace styling:
+       Clean whites, subtle borders, soft shadows, green primary
+       ======================================================== */
+    :root {
+      --primary: #16a34a;
+      --primary-hover: #15803d;
+      --primary-light: #f0fdf4;
+      --primary-border: #bbf7d0;
+      --secondary: #0f172a;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --border-focus: #16a34a;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+      --radius-sm: 8px;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      --header-height: 72px;
+      --bottom-nav-height: 64px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    input, select, textarea {
+      font-family: inherit;
+      outline: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 14px;
+      color: var(--text);
+      background: #ffffff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* ========================================================
+       TOP HEADER (Desktop & Mobile)
+       ======================================================== */
+    .header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--secondary);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .logo-badge {
+      background: var(--primary);
+      color: white;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .header-search {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+      display: none;
+    }
+
+    .header-search input {
+      padding-left: 40px;
+      padding-right: 14px;
+      height: 44px;
+      border-radius: var(--radius-full);
+      background: #f1f5f9;
+      border: 1px solid transparent;
+      font-size: 14px;
+    }
+
+    .header-search input:focus {
+      background: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .header-search .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn-add-car {
+      background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 13.5px;
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(22, 163, 74, 0.25);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-add-car:hover {
+      background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+      background: #f8fafc;
+      position: relative;
+      border: 1px solid var(--border);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .icon-btn:hover {
+      background: #ffffff;
+      color: var(--primary);
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .icon-btn svg {
+      transition: transform 0.2s ease;
+    }
+
+    .icon-btn:hover svg {
+      transform: scale(1.12);
+    }
+
+    .badge-count {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: var(--danger);
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+      border: 2px solid white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    .user-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .user-avatar-small {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #e2e8f0;
+    }
+
+    /* ========================================================
+       MOBILE BOTTOM NAVIGATION
+       ======================================================== */
+    .bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--bottom-nav-height);
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      z-index: 95;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    }
+
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      gap: 3px;
+      flex: 1;
+      height: 100%;
+      position: relative;
+    }
+
+    .bottom-nav-item.active {
+      color: var(--primary);
+    }
+
+    .bottom-nav-item .nav-icon {
+      font-size: 20px;
+    }
+
+    /* ========================================================
+       PAGE VIEWS WRAPPER
+       ======================================================== */
+    .main-content {
+      flex: 1;
+      padding: 20px 0 80px 0;
+    }
+
+    .view-section {
+      display: none;
+    }
+
+    .view-section.active {
+      display: block;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========================================================
+       HOME VIEW
+       ======================================================== */
+    .hero-banner {
+      background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%);
+      color: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 36px 24px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-banner h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      line-height: 1.25;
+    }
+
+    .hero-banner p {
+      color: #cbd5e1;
+      font-size: 15px;
+      margin-bottom: 20px;
+      max-width: 600px;
+    }
+
+    .hero-search-box {
+      background: #ffffff;
+      border-radius: var(--radius);
+      padding: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-search-field {
+      flex: 1;
+      min-width: 140px;
+      position: relative;
+    }
+
+    .hero-search-field input, .hero-search-field select {
+      border: 1px solid transparent;
+      background: #f8fafc;
+      height: 48px;
+      font-size: 14px;
+      border-radius: var(--radius-sm);
+    }
+
+    .hero-search-btn {
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      height: 48px;
+      padding: 0 24px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-search-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Categories Chips */
+    .category-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      scrollbar-width: none;
+    }
+    .category-scroll::-webkit-scrollbar { display: none; }
+
+    .category-chip {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--secondary);
+      white-space: nowrap;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .category-chip:hover, .category-chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Section Headings */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      margin-top: 24px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* ========================================================
+       CAR CARD (Uzum Market Inspired Clean Card)
+       ======================================================== */
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .car-card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+                  box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+      will-change: transform, box-shadow;
+    }
+
+    .car-card:hover {
+      transform: translateY(-8px) scale(1.008);
+      box-shadow: 0 20px 35px -8px rgba(15, 23, 42, 0.12), 0 8px 16px -4px rgba(15, 23, 42, 0.05);
+      border-color: #94a3b8;
+    }
+
+    .car-card:active {
+      transform: translateY(-4px) scale(1.002);
+    }
+
+    .car-card-image-wrap {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: #f1f5f9;
+      overflow: hidden;
+    }
+
+    .car-card-image-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.28) 0%, transparent 45%);
+      pointer-events: none;
+    }
+
+    .car-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .car-card:hover .car-card-img {
+      transform: scale(1.07);
+    }
+
+    .car-badge-year {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      z-index: 2;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .fav-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+    }
+
+    .fav-btn:hover {
+      transform: scale(1.16);
+      background: #ffffff;
+      color: #ef4444;
+    }
+
+    .fav-btn.active {
+      color: #ef4444;
+      background: #ffffff;
+      animation: heartPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes heartPop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.35); }
+      100% { transform: scale(1); }
+    }
+
+    .car-card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .car-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--secondary);
+      margin-bottom: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: -0.2px;
+    }
+
+    .car-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .car-rating {
+      color: #f59e0b;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #fffbeb;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .car-location {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .car-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .car-tag {
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .car-card-footer {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .car-price-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .car-price {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--secondary);
+      letter-spacing: -0.3px;
+    }
+
+    .car-price-unit {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .btn-rent-card {
+      background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 10px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25);
+    }
+
+    .btn-rent-card:hover {
+      background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+    }
+
+    .btn-rent-card:active {
+      transform: scale(0.96);
+    }
+
+    /* ========================================================
+       CARS CATALOG (With Sidebar Filters)
+       ======================================================== */
+    .catalog-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .filters-sidebar {
+      background: #ffffff;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 20px;
+      position: sticky;
+      top: calc(var(--header-height) + 16px);
+    }
+
+    .filter-group {
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .filter-group:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .filter-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--secondary);
+    }
+
+    .price-inputs {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .price-inputs input {
+      font-size: 13px;
+      padding: 8px 10px;
+    }
+
+    /* ========================================================
+       CAR DETAIL MODAL / PAGE
+       ======================================================== */
+    .detail-container {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 32px;
+    }
+
+    .gallery-main {
+      width: 100%;
+      height: 380px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #f1f5f9;
+      margin-bottom: 12px;
+    }
+
+    .gallery-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-thumbs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .thumb-item {
+      width: 76px;
+      height: 56px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .thumb-item.active {
+      border-color: var(--primary);
+    }
+
+    .thumb-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .spec-item {
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .spec-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .spec-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-top: 2px;
+    }
+
+    /* Rental Calculator Box */
+    .calc-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+
+    .calc-price-head {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .calc-price-num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .calc-date-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .calc-date-field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .calc-breakdown {
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+    }
+
+    .breakdown-row.total {
+      margin-bottom: 0;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+
+    .btn-submit-rental {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+    }
+
+    .btn-submit-rental:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-submit-rental:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Owner Card */
+    .owner-box {
+      margin-top: 20px;
+      padding: 16px;
+      background: #ffffff;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .owner-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .owner-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #cbd5e1;
+    }
+
+    /* ========================================================
+       8-STEP CAR ADDITION WIZARD
+       ======================================================== */
+    .wizard-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 32px;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: var(--shadow);
+    }
+
+    .wizard-progress {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .wizard-progress::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 10px;
+      right: 10px;
+      height: 3px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+
+    .progress-step {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    .progress-step.active .step-circle {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .progress-step.completed .step-circle {
+      background: #22c55e;
+      border-color: #22c55e;
+      color: white;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: none;
+    }
+
+    .wizard-step-content {
+      display: none;
+    }
+
+    .wizard-step-content.active {
+      display: block;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .wizard-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .photo-upload-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .photo-slot {
+      height: 120px;
+      border: 2px dashed #cbd5e1;
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      background: #f8fafc;
+      transition: all 0.2s;
+    }
+
+    .photo-slot:hover {
+      border-color: var(--primary);
+      background: #f0fdf4;
+    }
+
+    .photo-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-slot .delete-photo {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(239, 68, 68, 0.9);
+      color: white;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .photo-slot.is-main::after {
+      content: 'Asosiy rasm';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(22, 163, 74, 0.85);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      text-align: center;
+      padding: 2px 0;
+    }
+
+    /* ========================================================
+       CHAT VIEW (Split screen on desktop, full screen on mobile)
+       ======================================================== */
+    .chat-layout {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      height: 650px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .chat-sidebar {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+    }
+
+    .chat-sidebar-head {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .conv-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .conv-item {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #f8fafc;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .conv-item:hover, .conv-item.active {
+      background: #f0fdf4;
+    }
+
+    .conv-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #cbd5e1;
+    }
+
+    .conv-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .conv-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--secondary);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .conv-car {
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 600;
+      margin-top: 1px;
+    }
+
+    .conv-preview {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 3px;
+    }
+
+    .chat-main {
+      display: flex;
+      flex-direction: column;
+      background: #f8fafc;
+    }
+
+    .chat-main-head {
+      background: #ffffff;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .msg-bubble {
+      max-width: 70%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      position: relative;
+      word-break: break-word;
+    }
+
+    .msg-bubble.me {
+      align-self: flex-end;
+      background: var(--primary);
+      color: white;
+      border-bottom-right-radius: 2px;
+    }
+
+    .msg-bubble.other {
+      align-self: flex-start;
+      background: #ffffff;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 2px;
+    }
+
+    .msg-time {
+      font-size: 10px;
+      opacity: 0.7;
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    .chat-input-bar {
+      background: #ffffff;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* ========================================================
+       FACEBOOK-STYLE PROFILE PAGE
+       ======================================================== */
+    .profile-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .profile-cover {
+      height: 160px;
+      background: linear-gradient(135deg, #15803d 0%, #064e3b 50%, #0f172a 100%);
+      position: relative;
+    }
+
+    .profile-head-info {
+      padding: 0 28px 24px 28px;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: -50px;
+    }
+
+    .profile-user-main {
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+    }
+
+    .profile-avatar-big {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 4px solid #ffffff;
+      object-fit: cover;
+      background: #e2e8f0;
+      box-shadow: var(--shadow);
+    }
+
+    .profile-text-wrap {
+      margin-bottom: 6px;
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-verified {
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .profile-stats-bar {
+      display: flex;
+      gap: 20px;
+      padding: 16px 28px;
+      border-top: 1px solid var(--border);
+      background: #f8fafc;
+    }
+
+    .profile-stat-item {
+      display: flex;
+      gap: 6px;
+      font-size: 14px;
+    }
+
+    .profile-stat-item b {
+      color: var(--secondary);
+    }
+
+    .profile-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      padding: 0 20px;
+      overflow-x: auto;
+    }
+
+    .profile-tab {
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .profile-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    /* ========================================================
+       MODALS & NOTIFICATIONS
+       ======================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 460px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .modal-head {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+
+    .modal-body {
+      padding: 22px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .code-input-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .code-digit {
+      width: 44px;
+      height: 52px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 800;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+
+    .code-digit:focus {
+      border-color: var(--primary);
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 110;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #0f172a;
+      color: white;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+      animation: slideInRight 0.25s ease-out;
+    }
+
+    .toast.success { background: #15803d; }
+    .toast.error { background: #b91c1c; }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Empty states */
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      background: #ffffff;
+      border-radius: var(--radius);
+      border: 1px dashed var(--border);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      opacity: 0.8;
+    }
+
+    .empty-state-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 6px;
+    }
+
+    .empty-state-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 400px;
+      margin: 0 auto 16px auto;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--secondary);
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-secondary:hover { background: #e2e8f0; }
+
+    .btn-google {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 11px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--secondary);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      cursor: pointer;
+    }
+    .btn-google:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ========================================================
+       RESPONSIVENESS (Mobile & Notebook)
+       ======================================================== */
+    @media (max-width: 1024px) {
+      .header-search {
+        max-width: 260px;
+      }
+      .btn-add-car {
+        padding: 8px 14px;
+        font-size: 13px;
+      }
+      .cars-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .catalog-layout {
+        grid-template-columns: 220px 1fr;
+      }
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        --header-height: 58px;
+      }
+      body {
+        padding-bottom: var(--bottom-nav-height);
+      }
+      .header-search {
+        display: none !important;
+      }
+      .header-inner {
+        padding: 0 12px;
+        gap: 8px;
+      }
+      .logo {
+        font-size: 18px;
+        gap: 5px;
+      }
+      .logo svg {
+        width: 24px;
+        height: 24px;
+      }
+      .logo-badge {
+        font-size: 10px;
+        padding: 1px 5px;
+      }
+      .header-actions {
+        gap: 6px;
+      }
+      .desktop-only {
+        display: none !important;
+      }
+      .btn-add-car {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn-add-car span {
+        display: none !important;
+      }
+      .btn-add-car svg {
+        width: 18px;
+        height: 18px;
+        margin: 0;
+      }
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+      }
+      .icon-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+      .hero-banner {
+        padding: 18px 14px;
+        margin-bottom: 20px;
+        border-radius: 16px;
+      }
+      .hero-banner h1 {
+        font-size: 20px;
+        line-height: 1.3;
+        margin-bottom: 6px;
+      }
+      .hero-banner p {
+        font-size: 13px;
+        margin-bottom: 14px;
+      }
+      .hero-search-box {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: stretch;
+        gap: 8px;
+        padding: 8px;
+      }
+      .hero-search-field {
+        width: 100%;
+        min-width: 0;
+      }
+      .hero-search-field input, .hero-search-field select {
+        width: 100%;
+        height: 44px;
+        font-size: 13px;
+        padding: 0 10px;
+      }
+      .hero-search-btn {
+        grid-column: span 2;
+        width: 100%;
+        height: 44px;
+        font-size: 14px;
+      }
+      .section-header {
+        margin-top: 22px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .section-title {
+        font-size: 17px;
+        gap: 6px;
+        white-space: nowrap;
+      }
+      .section-title svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+      .section-link {
+        font-size: 13px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .bottom-nav {
+        display: flex;
+      }
+      .cars-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .car-card {
+        border-radius: 14px;
+      }
+      .car-card-image-wrap {
+        height: 125px;
+      }
+      .car-badge-year {
+        top: 6px;
+        left: 6px;
+        font-size: 10px;
+        padding: 2px 7px;
+      }
+      .favorite-heart-btn {
+        top: 6px;
+        right: 6px;
+        width: 30px;
+        height: 30px;
+      }
+      .favorite-heart-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+      .car-card-body {
+        padding: 10px 8px;
+      }
+      .car-card-title {
+        font-size: 13.5px;
+        margin-bottom: 4px;
+      }
+      .car-card-meta {
+        font-size: 11px;
+        gap: 5px;
+        margin-bottom: 6px;
+      }
+      .car-rating {
+        font-size: 10.5px;
+        padding: 1px 4px;
+      }
+      .car-location {
+        font-size: 11px;
+      }
+      .car-tags {
+        gap: 3px;
+        margin-bottom: 8px;
+      }
+      .car-tag {
+        font-size: 10px;
+        padding: 2px 5px;
+      }
+      .car-card-footer {
+        padding-top: 8px;
+        gap: 4px;
+      }
+      .car-price-amount {
+        font-size: 13px;
+      }
+      .car-price-period {
+        font-size: 10px;
+      }
+      .btn-card-rent {
+        padding: 5px 8px;
+        font-size: 11.5px;
+      }
+      .catalog-layout {
+        grid-template-columns: 1fr;
+      }
+      .filters-sidebar {
+        display: none;
+      }
+      .chat-layout {
+        grid-template-columns: 1fr;
+        height: calc(100vh - 140px);
+      }
+      .chat-sidebar.mobile-hidden {
+        display: none;
+      }
+      .chat-main.mobile-hidden {
+        display: none;
+      }
+      .profile-head-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: -50px;
+      }
+      .profile-user-main {
+        flex-direction: column;
+        align-items: center;
+      }
+      .profile-stats-bar {
+        justify-content: center;
+      }
+      .photo-upload-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .step-circle {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       TOP HEADER
+       ========================================== -->
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo" onclick="navigateTo('home')">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.6 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+        <span>AvtoRent</span>
+        <span class="logo-badge">UZ</span>
+      </div>
+
+      <div class="header-search" style="display: flex;">
+        <span class="search-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </span>
+        <input type="text" id="globalSearchInput" placeholder="Mashina markasi, modeli yoki shahar bo‘yicha qidirish..." onkeyup="if(event.key === 'Enter') handleSearch()">
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-add-car" onclick="handleAddCarClick()" title="Mashinamni ijaraga berish">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+          <span>Mashinamni ijaraga berish</span>
+        </button>
+
+        <button class="icon-btn desktop-only" onclick="navigateTo('favorites')" title="Yoqtirganlar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          <span class="badge-count" id="favBadge" style="display:none;">0</span>
+        </button>
+
+        <button class="icon-btn desktop-only" onclick="navigateTo('chat')" title="Xabarlar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+          <span class="badge-count" id="msgBadge" style="display:none;">0</span>
+        </button>
+
+        <button class="icon-btn" onclick="openNotificationsModal()" title="Bildirishnomalar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="badge-count" id="notifBadge" style="display:none;">0</span>
+        </button>
+
+        <div id="authHeaderBlock">
+          <!-- Populated by JS based on login status -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       MOBILE BOTTOM NAVIGATION
+       ========================================== -->
+  <nav class="bottom-nav">
+    <button class="bottom-nav-item active" onclick="navigateTo('home')">
+      <span class="nav-icon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+      <span>Bosh sahifa</span>
+    </button>
+    <button class="bottom-nav-item" onclick="navigateTo('cars')">
+      <span class="nav-icon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.6 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></span>
+      <span>Mashinalar</span>
+    </button>
+    <button class="bottom-nav-item" onclick="navigateTo('favorites')">
+      <span class="nav-icon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></span>
+      <span>Yoqtirganlar</span>
+    </button>
+    <button class="bottom-nav-item" onclick="navigateTo('rentals')">
+      <span class="nav-icon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg></span>
+      <span>Ijaralar</span>
+    </button>
+    <button class="bottom-nav-item" onclick="navigateTo('profile')">
+      <span class="nav-icon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      <span>Profil</span>
+    </button>
+  </nav>
+
+  <!-- ==========================================
+       MAIN VIEWS CONTAINER
+       ========================================== -->
+  <main class="main-content container">
+
+    <!-- VIEW 1: HOME PAGE -->
+    <section id="view-home" class="view-section active">
+      <div class="hero-banner">
+        <h1>Qaysi mashinani ijaraga olmoqchisiz?</h1>
+        <p>Toshkent, Samarqand, Buxoro va butun O‘zbekiston bo‘ylab eng qulay va ishonchli mashinalar</p>
+        
+        <div class="hero-search-box">
+          <div class="hero-search-field">
+            <input type="text" id="heroBrandInput" placeholder="Marka (Cobalt, Gentra, K5...)">
+          </div>
+          <div class="hero-search-field">
+            <select id="heroRegionSelect">
+              <option value="">Barcha hududlar</option>
+              <option value="Toshkent">Toshkent</option>
+              <option value="Samarqand">Samarqand</option>
+              <option value="Buxoro">Buxoro</option>
+              <option value="Farg‘ona">Farg‘ona</option>
+              <option value="Andijon">Andijon</option>
+              <option value="Namangan">Namangan</option>
+            </select>
+          </div>
+          <button class="hero-search-btn" onclick="handleHeroSearch()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span>Qidirish</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick category chips -->
+      <div class="category-scroll">
+        <button class="category-chip active" onclick="filterByCategory('all', this)">Barchasi</button>
+        <button class="category-chip" onclick="filterByCategory('Sedan', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.6 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+          <span>Sedan</span>
+        </button>
+        <button class="category-chip" onclick="filterByCategory('Krossover', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h18M5 13l2-5h10l2 5M6 18h12"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+          <span>Krossover / SUV</span>
+        </button>
+        <button class="category-chip" onclick="filterBySection('popular', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Ommabop</span>
+        </button>
+        <button class="category-chip" onclick="filterBySection('budget', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>Arzon ijara</span>
+        </button>
+        <button class="category-chip" onclick="filterBySection('premium', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 8.5 22 9 17 14 18.5 21 12 17.5 5.5 21 7 14 2 9 9 8.5 12 2"/></svg>
+          <span>Premium</span>
+        </button>
+        <button class="category-chip" onclick="filterByCategory('Avtomat', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>Avtomat</span>
+        </button>
+      </div>
+
+      <!-- Section: Ommabop mashinalar -->
+      <div class="section-header">
+        <h2 class="section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Ommabop mashinalar</span>
+        </h2>
+        <span class="section-link" onclick="navigateTo('cars')">Barchasini ko‘rish →</span>
+      </div>
+      <div class="cars-grid" id="popularCarsGrid">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Section: Yangi qo'shilganlar -->
+      <div class="section-header" style="margin-top: 36px;">
+        <h2 class="section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#2563eb" stroke="#2563eb" stroke-width="1"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
+          <span>Yangi qo‘shilganlar</span>
+        </h2>
+        <span class="section-link" onclick="navigateTo('cars')">Barchasini ko‘rish →</span>
+      </div>
+      <div class="cars-grid" id="newCarsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- VIEW 2: CARS CATALOG -->
+    <section id="view-cars" class="view-section">
+      <div class="catalog-layout">
+        <!-- Sidebar filters -->
+        <aside class="filters-sidebar">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h3 style="font-size:16px; font-weight:700;">Filtrlar</h3>
+            <button style="color:var(--primary); font-size:12px; font-weight:600;" onclick="resetFilters()">Tozalash</button>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-title">Marka</div>
+            <select id="filterBrand" onchange="applyFilters()">
+              <option value="all">Barcha markalar</option>
+              <option value="Chevrolet">Chevrolet</option>
+              <option value="Kia">Kia</option>
+              <option value="Toyota">Toyota</option>
+              <option value="Hyundai">Hyundai</option>
+              <option value="BYD">BYD</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-title">Kunlik narx (so‘m)</div>
+            <div class="price-inputs">
+              <input type="number" id="filterMinPrice" placeholder="Dan" step="50000" onchange="applyFilters()">
+              <span>-</span>
+              <input type="number" id="filterMaxPrice" placeholder="Gacha" step="50000" onchange="applyFilters()">
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-title">Kuzov turi</div>
+            <select id="filterBodyType" onchange="applyFilters()">
+              <option value="all">Barchasi</option>
+              <option value="Sedan">Sedan</option>
+              <option value="Krossover">Krossover</option>
+              <option value="SUV">SUV</option>
+              <option value="Xetchbek">Xetchbek</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-title">Uzatma qutisi</div>
+            <select id="filterTransmission" onchange="applyFilters()">
+              <option value="all">Barchasi</option>
+              <option value="Avtomat">Avtomat</option>
+              <option value="Mexanika">Mexanika</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-title">Yoqilg‘i turi</div>
+            <select id="filterFuelType" onchange="applyFilters()">
+              <option value="all">Barchasi</option>
+              <option value="Benzin">Benzin</option>
+              <option value="Gaz">Gaz</option>
+              <option value="Gibrid">Gibrid</option>
+              <option value="Elektr">Elektr</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-title">Hudud</div>
+            <select id="filterRegion" onchange="applyFilters()">
+              <option value="all">Barcha viloyatlar</option>
+              <option value="Toshkent">Toshkent</option>
+              <option value="Samarqand">Samarqand</option>
+              <option value="Buxoro">Buxoro</option>
+            </select>
+          </div>
+        </aside>
+
+        <!-- Catalog main list -->
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <p style="font-size:14px; color:var(--text-muted);"><b id="catalogCount" style="color:var(--secondary)">0</b> ta avtomobil topildi</p>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span style="font-size:13px; color:var(--text-muted);">Saralash:</span>
+              <select id="sortSelect" onchange="applyFilters()" style="width: auto; padding:6px 12px; font-size:13px;">
+                <option value="newest">Yangi qo‘shilganlar</option>
+                <option value="price_asc">Arzondan qimmatga</option>
+                <option value="price_desc">Qimmatdan arzonga</option>
+                <option value="rating">Reyting bo‘yicha</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="cars-grid" id="catalogCarsGrid">
+            <!-- Catalog cards rendered here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: CAR DETAIL -->
+    <section id="view-detail" class="view-section">
+      <button onclick="navigateTo('cars')" style="display:inline-flex; align-items:center; gap:8px; margin-bottom:18px; font-weight:700; color:var(--text-muted); background: white; border: 1px solid var(--border); padding: 8px 16px; border-radius: 10px; cursor: pointer; transition: all 0.2s;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        <span>Orqaga qaytish</span>
+      </button>
+
+      <div class="detail-container" id="detailContent">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- VIEW 4: FAVORITES -->
+    <section id="view-favorites" class="view-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          <span>Yoqtirgan mashinalaringiz</span>
+        </h2>
+      </div>
+      <div class="cars-grid" id="favoritesGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- VIEW 5: RENTALS -->
+    <section id="view-rentals" class="view-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          <span>Ijaralar boshqaruvi</span>
+        </h2>
+      </div>
+
+      <div class="profile-tabs" style="margin-bottom:20px; border-radius:var(--radius); border:1px solid var(--border);">
+        <button class="profile-tab active" id="tabMyRentals" onclick="switchRentalTab('renter')">Mening ijaralarim (Mijoz sifatida)</button>
+        <button class="profile-tab" id="tabOwnerRentals" onclick="switchRentalTab('owner')">Kelgan so‘rovlar (Mashina egasi sifatida)</button>
+      </div>
+
+      <div id="rentalsListContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- VIEW 6: CHAT -->
+    <section id="view-chat" class="view-section">
+      <div class="chat-layout">
+        <!-- Left: Conversations list -->
+        <div class="chat-sidebar" id="chatSidebar">
+          <div class="chat-sidebar-head">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+            <span>Xabarlar</span>
+          </div>
+          <div class="conv-list" id="convList">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Right: Active conversation -->
+        <div class="chat-main" id="chatMain">
+          <div class="chat-main-head" id="chatHead">
+            <div style="font-weight:700; color:var(--secondary);">Suhbatni tanlang</div>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+              </div>
+              <div class="empty-state-title">Suhbat mavjud emas</div>
+              <div class="empty-state-desc">Chap tarafdagi ro‘yxatdan suhbatni tanlang yoki mashina sahifasidan egasi bilan bog‘laning.</div>
+            </div>
+          </div>
+          <div class="chat-input-bar" id="chatInputBar" style="display:none;">
+            <input type="text" id="chatTextInput" placeholder="Xabaringizni yozing..." onkeyup="if(event.key==='Enter') sendChatMessage()">
+            <label style="cursor:pointer; display:flex; align-items:center; padding: 6px;" title="Rasm yuborish">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+              <input type="file" id="chatImgInput" accept="image/*" style="display:none;" onchange="handleChatImageUpload(this)">
+            </label>
+            <button class="btn-primary" onclick="sendChatMessage()" style="padding:10px 18px; border-radius:10px; display:inline-flex; align-items:center; gap:6px;">
+              <span>Yuborish</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 7: PROFILE -->
+    <section id="view-profile" class="view-section">
+      <div class="profile-card">
+        <div class="profile-cover"></div>
+        <div class="profile-head-info">
+          <div class="profile-user-main">
+            <img src="" id="profileAvatarImg" class="profile-avatar-big" alt="Profile">
+            <div class="profile-text-wrap">
+              <h2 class="profile-name" id="profileFullName">
+                <span>Ali Valiyev</span>
+                <span class="badge-verified" id="profileVerifiedBadge">✓ Tasdiqlangan</span>
+              </h2>
+              <p style="color:var(--text-muted); font-size:14px;" id="profileEmail">ali@example.com</p>
+            </div>
+          </div>
+          <button class="btn-secondary" onclick="openEditProfileModal()">✏️ Profilni tahrirlash</button>
+        </div>
+
+        <div class="profile-stats-bar">
+          <div class="profile-stat-item">Mashinalarim: <b id="statCarsCount">0</b></div>
+          <div class="profile-stat-item">•</div>
+          <div class="profile-stat-item">Ijaralar: <b id="statRentalsCount">0</b></div>
+          <div class="profile-stat-item">•</div>
+          <div class="profile-stat-item">Reyting: <b style="color:#f59e0b;">⭐ 5.0</b></div>
+        </div>
+
+        <div class="profile-tabs">
+          <button class="profile-tab active" onclick="switchProfileSection('my-cars', this)">🚗 Mening mashinalarim</button>
+          <button class="profile-tab" onclick="navigateTo('rentals')">📅 Mening ijaralarim</button>
+          <button class="profile-tab" onclick="navigateTo('favorites')">❤️ Yoqtirganlar</button>
+          <button class="profile-tab" onclick="logoutUser()" style="color:var(--danger); margin-left:auto;">🚪 Chiqish</button>
+        </div>
+      </div>
+
+      <!-- Profile Sub-section: My Cars -->
+      <div id="profileMyCarsSection">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3 style="font-size:18px; font-weight:700;">Joylashtirgan mashinalaringiz</h3>
+          <button class="btn-primary" onclick="handleAddCarClick()">+ Yangi mashina qo‘shish</button>
+        </div>
+        <div class="cars-grid" id="myCarsGrid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 8: ADD CAR 8-STEP WIZARD -->
+    <section id="view-add-car" class="view-section">
+      <div class="wizard-card">
+        <div style="margin-bottom:20px; text-align:center;">
+          <h2 style="font-size:22px; font-weight:800; color:var(--secondary);">Mashinani ijaraga berish</h2>
+          <p style="color:var(--text-muted); font-size:14px;">Avtomobilingizni 8 bosqichda to‘liq ma‘lumotlar bilan joylashtiring</p>
+        </div>
+
+        <!-- 8 steps indicators -->
+        <div class="wizard-progress">
+          <div class="progress-step active" id="prog-1"><div class="step-circle">1</div><div class="step-label">Rasmlar</div></div>
+          <div class="progress-step" id="prog-2"><div class="step-circle">2</div><div class="step-label">Asosiy</div></div>
+          <div class="progress-step" id="prog-3"><div class="step-circle">3</div><div class="step-label">Texnik</div></div>
+          <div class="progress-step" id="prog-4"><div class="step-circle">4</div><div class="step-label">Manzil</div></div>
+          <div class="progress-step" id="prog-5"><div class="step-circle">5</div><div class="step-label">Narx</div></div>
+          <div class="progress-step" id="prog-6"><div class="step-circle">6</div><div class="step-label">Mavjudlik</div></div>
+          <div class="progress-step" id="prog-7"><div class="step-circle">7</div><div class="step-label">Qoidalar</div></div>
+          <div class="progress-step" id="prog-8"><div class="step-circle">8</div><div class="step-label">Preview</div></div>
+        </div>
+
+        <form id="addCarForm" onsubmit="event.preventDefault()">
+          <!-- STEP 1: PHOTOS -->
+          <div class="wizard-step-content active" id="wizard-step-1">
+            <h3 style="font-size:16px; font-weight:700; margin-bottom:6px;">1-bosqich: Mashinangiz rasmlari</h3>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">
+              Haqiqiy mashina rasmlarini yuklang (kamida 3 ta, ko‘pi bilan 8 ta). Birinchi rasm asosiy bo‘ladi.
+            </p>
+
+            <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+              <label class="btn-primary" style="cursor:pointer;">
+                <span>📷 Telefon / Kompyuterdan yuklash</span>
+                <input type="file" id="carPhotoInput" accept="image/*" multiple style="display:none;" onchange="handleCarImagesUpload(this)">
+              </label>
+              <button type="button" class="btn-secondary" onclick="openPinterestPickerModal()" style="border:1px solid #cbd5e1;">
+                <span>📌 Pinterest rasmlaridan tanlash</span>
+              </button>
+              <button type="button" class="btn-secondary" onclick="insertSamplePhotos()">
+                <span>🌟 4 ta demo rasm yuklash</span>
+              </button>
+            </div>
+
+            <div class="photo-upload-grid" id="photoUploadGrid">
+              <!-- Uploaded photo slots -->
+            </div>
+          </div>
+
+          <!-- STEP 2: MAIN INFO -->
+          <div class="wizard-step-content" id="wizard-step-2">
+            <h3 style="font-size:16px; font-weight:700; margin-bottom:14px;">2-bosqich: Asosiy ma‘lumotlar</h3>
+            <div class="form-group">
+              <label>Marka *</label>
+              <select id="carBrand" required>
+                <option value="Chevrolet">Chevrolet</option>
+                <option value="Kia">Kia</option>
+                <option value="Hyundai">Hyundai</option>
+                <option value="Toyota">Toyota</option>
+                <option value="BYD">BYD</option>
+                <option value="Chery">Chery</option>
+                <option value="Boshqa">Boshqa</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Model *</label>
+              <input type="text" id="carModel" placeholder="Masalan: Cobalt, Gentra, K5, Tracker..." required>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label>Ishlab chiqarilgan yili *</label>
+                <input type="number" id="carYear" value="2023" min="1990" max="2026" required>
+              </div>
+              <div class="form-group">
+                <label>Rangi</label>
+                <input type="text" id="carColor" placeholder="Oq, Qora, Kulrang..." value="Oq">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Kuzov turi *</label>
+              <select id="carBodyType">
+                <option value="Sedan">Sedan</option>
+                <option value="Krossover">Krossover</option>
+                <option value="SUV">SUV</option>
+                <option value="Xetchbek">Xetchbek</option>
+                <option value="Miniven">Miniven</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- STEP 3: TECHNICAL INFO -->
+          <div class="wizard-step-content" id="wizard-step-3">
+            <h3 style="font-size:16px; font-weight:700; margin-bottom:14px;">3-bosqich: Texnik xususiyatlar</h3>
+            <div class="form-group">
+              <label>Uzatma qutisi (Korobka) *</label>
+              <select id="carTransmission">
+                <option value="Avtomat">Avtomat</option>
+                <option value="Mexanika">Mexanika</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Yoqilg‘i turi *</label>
+              <select id="carFuelType">
+                <option value="Benzin">Benzin</option>
+                <option value="Gaz">Gaz (Metan/Propan)</option>
+                <option value="Gibrid">Gibrid</option>
+                <option value="Elektr">Elektr</option>
+                <option value="Dizel">Dizel</option>
+              </select>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label>O‘rindiqlar soni</label>
+                <input type="number" id="carSeats" value="5" min="2" max="12">
+              </div>
+              <div class="form-group">
+                <label>Probeg (km)</label>
+                <input type="number" id="carMileage" value="35000" min="0">
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 4: LOCATION -->
+          <div class="wizard-step-content" id="wizard-step-4">
+            <h3 style="font-size:16px; font-weight:700; margin-bottom:14px;">4-bosqich: Joylashuv va manzil</h3>
+            <div class="form-group">
+              <label>Viloyat / Hudud *</label>
+              <select id="carRegion" required>
+                <option value="Toshkent">Toshkent</option>
+                <option value="Samarqand">Samarqand</option>
+                <option value="Buxoro">Buxoro</option>
+                <option value="Farg‘ona">Farg‘ona</option>
+                <option value="Andijon">Andijon</option>
+                <option value="Namangan">Namangan</option>
+                <option value="Qashqadaryo">Qashqadaryo</option>
+                <option value="Xorazm">Xorazm</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Shahar / Tuman *</label>
+              <input type="text" id="carCity" placeholder="Toshkent shahri, Yunusobod tumani..." required value="Toshkent shahri">
+            </div>
+            <div class="form-group">
+              <label>Mashinani olib ketish aniq joyi</label>
+              <input type="text" id="carPickupAddress" placeholder="Mo‘ljal yoki ko‘cha nomi...">
+            </div>
+          </div>
+
+          <!-- STEP 5: PRICING -->
+          <div class="wizard-step-content" id="wizard-step-5">
+            <h3 style="font-size:16px; font-weight:700; margin-bottom:14px;">5-bosqich: Ijara narxi va shartlari</h3>
+            <div class="form-group">
+              <label>Bir kunlik ijara narxi (so‘m) *</label>
+              <input type="number" id="carDailyPrice" placeholder="Masalan: 350000" step="10000" required value="350000">
+            </div>
+            <div class="form-group">
+              <label>Depozit / Garov summasi (so‘m)</label>
+              <input type="number" id="carDeposit" placeholder="Masalan: 1000000" step="50000" value="1000000">
+            </div>
+            <div class="form-group">
+              <label>Minimal ijara muddati (kun)</label>
+              <input type="number" id="carMinDays" value="1" min="1" max="30">
+            </div>
+          </div>
+
+          <!-- STEP 6: AVAILABILITY -->
+          <div class="wizard-step-content" id="wizard-step-6">
+            <h3 style="font-size:16px; font-weight:700; margin-bottom:14px;">6-bosqich: Mavjudlik taqvimi</h3>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">
+              Mashinangiz e‘lon joylanganidan so‘ng barcha foydalanuvchilar uchun bo‘sh (🟢 Available) holatda ko‘rinadi. Har bir yangi tasdiqlangan buyurtma kalendarda avtomatik band qilinadi.
+            </p>
+            <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:16px; border-radius:var(--radius-sm); font-size:14px; color:#166534;">
+              ✓ Avtomatik kalendar boshqaruvi yoqilgan. Bir xil sanaga ikkita mijoz buyurtma berishi backend darajasida himoyalangan.
+            </div>
+          </div>
+
+          <!-- STEP 7: RULES -->
+          <div class="wizard-step-content" id="wizard-step-7">
+            <h3 style="font-size:16px; font-weight:700; margin-bottom:14px;">7-bosqich: Haydovchiga talablar va qoidalar</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="form-group">
+                <label>Minimal yosh (yil)</label>
+                <input type="number" id="carMinAge" value="21" min="18">
+              </div>
+              <div class="form-group">
+                <label>Haydovchilik staji (yil)</label>
+                <input type="number" id="carMinExp" value="1" min="0">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Kunlik km limiti</label>
+              <input type="number" id="carKmLimit" value="300" step="50">
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+              <label style="display:flex; align-items:center; gap:8px; font-size:14px; cursor:pointer;">
+                <input type="checkbox" id="carSmoking" style="width:18px; height:18px;">
+                Salonda chekishga ruxsat beriladi
+              </label>
+              <label style="display:flex; align-items:center; gap:8px; font-size:14px; cursor:pointer;">
+                <input type="checkbox" id="carPets" style="width:18px; height:18px;">
+                Uy hayvonlari bilan chiqishga ruxsat
+              </label>
+            </div>
+            <div class="form-group" style="margin-top:14px;">
+              <label>Qo‘shimcha qoidalar yoki eslatmalar</label>
+              <textarea id="carExtraRules" rows="3" placeholder="Tozalik talablari, jarimalar shartlari..."></textarea>
+            </div>
+          </div>
+
+          <!-- STEP 8: PREVIEW & SUBMIT -->
+          <div class="wizard-step-content" id="wizard-step-8">
+            <h3 style="font-size:16px; font-weight:700; margin-bottom:14px;">8-bosqich: E‘lonni tekshirish va tasdiqlash</h3>
+            <div id="wizardPreviewCard" style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin-bottom:18px;">
+              <!-- Filled dynamically by JS -->
+            </div>
+            <p style="font-size:13px; color:var(--text-muted); text-align:center;">
+              "E‘lonni joylash" tugmasini bosganingizdan so‘ng avtomobilingiz serverda saqlanadi va marketplace qidiruviga qo‘shiladi.
+            </p>
+          </div>
+
+          <!-- Wizard action buttons -->
+          <div class="wizard-actions">
+            <button type="button" class="btn-secondary" id="btnWizardPrev" onclick="changeWizardStep(-1)" style="visibility:hidden;">
+              ← Ortga
+            </button>
+            <button type="button" class="btn-primary" id="btnWizardNext" onclick="changeWizardStep(1)">
+              Davom etish →
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       MODALS: AUTH, NOTIFICATIONS, PROFILE EDIT
+       ========================================== -->
+
+  <!-- AUTH MODAL (Login / Register / Verify / Forgot) -->
+  <div class="modal-backdrop" id="authModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title" id="authModalTitle">Tizimga kirish</div>
+        <button onclick="closeModal('authModal')" style="font-size:20px; color:var(--text-muted);">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Step 1: ENTER EMAIL -->
+        <div id="formEmailAuth">
+          <div style="text-align:center; margin-bottom: 22px;">
+            <div style="width:52px; height:52px; border-radius:50%; background:#f0fdf4; color:#16a34a; display:inline-flex; align-items:center; justify-content:center; margin-bottom:12px;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+            <h3 style="font-size:19px; font-weight:800; color:var(--secondary); margin-bottom:4px;">Email orqali kirish</h3>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.4;">Emailingizni kiriting, sizga 6 xonali tasdiqlash kodi yuboriladi</p>
+          </div>
+
+          <form onsubmit="handleSendOtpSubmit(event)">
+            <div class="form-group">
+              <label style="font-size:13px; font-weight:600; color:var(--secondary); margin-bottom:6px;">Email manzilingiz</label>
+              <input type="email" id="authEmailInput" required placeholder="masalan: siusbkcnzd@gmail.com" style="height:48px; font-size:15px; border-radius:10px;">
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%; height:48px; font-size:15px; font-weight:700; border-radius:12px; margin-top:8px;" id="btnSendOtpSubmit">
+              <span>Tasdiqlash kodini olish →</span>
+            </button>
+          </form>
+
+          <div style="text-align:center; margin-top:18px; padding-top:14px; border-top:1px solid #f1f5f9;">
+            <a href="javascript:void(0)" onclick="switchAuthMode('password')" style="font-size:12.5px; color:var(--text-muted); font-weight:600;">Parol bilan kirish</a>
+          </div>
+        </div>
+
+        <!-- Step 2: ENTER OTP CODE -->
+        <div id="formVerifyCode" style="display:none;">
+          <div style="text-align:center; margin-bottom: 20px;">
+            <div style="width:52px; height:52px; border-radius:50%; background:#f0fdf4; color:#16a34a; display:inline-flex; align-items:center; justify-content:center; margin-bottom:12px;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 style="font-size:19px; font-weight:800; color:var(--secondary); margin-bottom:4px;">Tasdiqlash kodi</h3>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">
+              <b id="otpTargetEmailText" style="color:var(--secondary);">email</b> ga yuborilgan 6 xonali kodni kiriting:
+            </p>
+          </div>
+
+          <form onsubmit="handleVerifyOtpSubmit(event)">
+            <div class="code-input-row">
+              <input type="text" maxlength="1" class="code-digit" id="cd1" onkeyup="handleCodeKey(this, 1, event)" onpaste="handleCodePaste(event)" inputmode="numeric">
+              <input type="text" maxlength="1" class="code-digit" id="cd2" onkeyup="handleCodeKey(this, 2, event)" inputmode="numeric">
+              <input type="text" maxlength="1" class="code-digit" id="cd3" onkeyup="handleCodeKey(this, 3, event)" inputmode="numeric">
+              <input type="text" maxlength="1" class="code-digit" id="cd4" onkeyup="handleCodeKey(this, 4, event)" inputmode="numeric">
+              <input type="text" maxlength="1" class="code-digit" id="cd5" onkeyup="handleCodeKey(this, 5, event)" inputmode="numeric">
+              <input type="text" maxlength="1" class="code-digit" id="cd6" onkeyup="handleCodeKey(this, 6, event)" inputmode="numeric">
+            </div>
+
+            <div id="devCodeBanner" style="display:none; background:#ecfdf5; border:1px solid #10b981; padding:12px 14px; border-radius:12px; margin-bottom:16px; text-align:center;">
+              <div style="font-size:12px; color:#047857; font-weight:600; margin-bottom:4px;">Tasdiqlash kodingiz (ekranda):</div>
+              <div id="devCodeDisplay" style="font-size:26px; font-weight:800; letter-spacing:6px; color:#065f46; font-family:monospace; user-select:all; cursor:pointer;" title="Kodni kiritish uchun bosing" onclick="autoFillOtp(this.innerText)"></div>
+              <div style="font-size:11px; color:#059669; margin-top:4px;">(Ushbu kod emailingizga ham yuborildi)</div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width:100%; height:48px; font-size:15px; font-weight:700; border-radius:12px;" id="btnVerifyOtpSubmit">
+              <span>Tasdiqlash va Kirish</span>
+            </button>
+
+            <div style="display:flex; justify-content:center; align-items:center; gap:12px; margin-top:18px; font-size:13px;">
+              <a href="javascript:void(0)" onclick="resendCurrentOtpCode()" style="color:var(--primary); font-weight:700;">Kodni qaytadan yuborish</a>
+              <span style="color:#cbd5e1;">•</span>
+              <a href="javascript:void(0)" onclick="switchAuthMode('email')" style="color:var(--text-muted); font-weight:600;">Emailni o‘zgartirish</a>
+            </div>
+          </form>
+        </div>
+
+        <!-- Optional: PASSWORD LOGIN -->
+        <div id="formPasswordLogin" style="display:none;">
+          <form onsubmit="handlePasswordLoginSubmit(event)">
+            <div class="form-group">
+              <label>Email manzil</label>
+              <input type="email" id="passLoginEmail" required placeholder="ali@gmail.com" style="height:44px;">
+            </div>
+            <div class="form-group">
+              <label>Parol</label>
+              <input type="password" id="passLoginPassword" required placeholder="••••••••" style="height:44px;">
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%; height:44px; margin-top:8px;" id="btnPassLoginSubmit">Kirish</button>
+          </form>
+          <div style="text-align:center; margin-top:16px;">
+            <a href="javascript:void(0)" onclick="switchAuthMode('email')" style="color:var(--primary); font-weight:600; font-size:13px;">← Email tasdiqlash kodi orqali kirish</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS MODAL -->
+  <div class="modal-backdrop" id="notifModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title">🔔 Bildirishnomalar</div>
+        <button onclick="closeModal('notifModal')" style="font-size:20px; color:var(--text-muted);">✕</button>
+      </div>
+      <div class="modal-body" id="notifListBody">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- PINTEREST PHOTO PICKER MODAL -->
+  <div class="modal-backdrop" id="pinterestModal">
+    <div class="modal-card" style="max-width: 760px;">
+      <div class="modal-head">
+        <div class="modal-title">📌 Pinterest Avtomobil Rasmlari (40 ta HD)</div>
+        <button onclick="closeModal('pinterestModal')" style="font-size:20px; color:var(--text-muted);">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">
+          E‘loningiz uchun 3 tadan 8 tagacha rasm tanlang (rasm ustiga bosib belgilang):
+        </p>
+        <div id="pinterestPhotosGrid" style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-height: 420px; overflow-y: auto; padding: 4px;">
+          <!-- Loaded via JS -->
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:12px; border-top:1px solid var(--border);">
+          <span style="font-size:14px; font-weight:700; color:var(--secondary);" id="selectedPinterestCount">Tanlandi: 0 ta (kamida 3 ta kerak)</span>
+          <button class="btn-primary" onclick="confirmPinterestSelection()">Tanlanganlarni qo‘shish</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE EDIT MODAL -->
+  <div class="modal-backdrop" id="profileEditModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title">Profilni tahrirlash</div>
+        <button onclick="closeModal('profileEditModal')" style="font-size:20px; color:var(--text-muted);">✕</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="handleProfileEditSubmit(event)">
+          <div class="form-group" style="text-align:center; margin-bottom: 20px;">
+            <label style="display:block; margin-bottom:10px; font-weight:700;">Profil rasmi</label>
+            <div style="position:relative; width:92px; height:92px; margin:0 auto 12px auto; cursor:pointer;" onclick="document.getElementById('editAvatarFileInput').click()" title="Papkadan rasm tanlash uchun bosing">
+              <img id="previewAvatarImg" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80" style="width:92px; height:92px; border-radius:50%; object-fit:cover; border:3px solid var(--primary); box-shadow:0 4px 12px rgba(0,0,0,0.12);" alt="Avatar Preview">
+              <div style="position:absolute; bottom:2px; right:2px; background:var(--primary); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid white; box-shadow:0 2px 5px rgba(0,0,0,0.2);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+              </div>
+            </div>
+
+            <!-- Real File Input from Folder / Gallery -->
+            <input type="file" id="editAvatarFileInput" accept="image/*" onchange="handleAvatarFileSelect(event)" style="display:none;">
+
+            <button type="button" class="btn-secondary" onclick="document.getElementById('editAvatarFileInput').click()" style="width:100%; border:1px dashed #94a3b8; background:#f8fafc; font-size:13.5px; font-weight:600; padding:11px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+              <span>📁 Papkadan / Galereyadan rasm tanlash</span>
+            </button>
+
+            <input type="hidden" id="editAvatarUrl">
+          </div>
+          <div class="form-group">
+            <label>Ism</label>
+            <input type="text" id="editName" required>
+          </div>
+          <div class="form-group">
+            <label>Familiya</label>
+            <input type="text" id="editSurname" required>
+          </div>
+          <div class="form-group">
+            <label>Telefon raqam</label>
+            <input type="text" id="editPhone" placeholder="+998 90 123 45 67">
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%;">Saqlash</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========================================================
+       JAVASCRIPT APPLICATION CODE
+       Sections: AUTH, API, STATE, NAVIGATION, CARS, RENTALS,
+                 CHAT, PROFILE, NOTIFICATIONS, UI HELPERS
+       ======================================================== -->
+  <script>
+    // ==========================================
+    // STATE & CONFIG
+    // ==========================================
+    // ==========================================
+    // STANDALONE / SERVERLESS CLIENT-SIDE DATABASE
+    // (Operates 100% in browser via localStorage)
+    // ==========================================
+    const INITIAL_CARS = [{"id":1,"owner_id":1,"brand":"Chevrolet","model":"Cobalt","year":2023,"color":"Oq (Snow White)","body_type":"Sedan","transmission":"Avtomat","fuel_type":"Benzin","seats":5,"mileage":38000,"region":"Toshkent","city":"Toshkent shahri","district":"Yunusobod tumani","pickup_address":"Mega Planet savdo markazi yaqinida","daily_price":350000,"deposit":1000000,"min_rental_days":1,"min_age":21,"min_experience":1,"daily_km_limit":300,"smoking_allowed":0,"pets_allowed":0,"abroad_allowed":0,"extra_rules":"Toza holda topshiriladi, toza holda qaytariladi. Jarimalar haydovchi hisobidan.","status":"ACTIVE","rating":4.9,"review_count":14,"main_image":"https://i.pinimg.com/736x/7a/2e/76/7a2e76dbc30dd0fc0bb9b155a41ef725.jpg","created_at":"2026-10-03 10:50:28","images":["https://i.pinimg.com/736x/7a/2e/76/7a2e76dbc30dd0fc0bb9b155a41ef725.jpg","https://i.pinimg.com/736x/20/52/83/2052830dd25568deb458e4aa9996ac10.jpg","https://i.pinimg.com/736x/04/36/b0/0436b05303daa36b9e53f2e2ad5fd271.jpg","https://i.pinimg.com/736x/12/65/b3/1265b3fcbb7c43e91c5f5bad92db8ddb.jpg"]},{"id":2,"owner_id":1,"brand":"Chevrolet","model":"Gentra (Lacetti)","year":2022,"color":"Qora (Carbon Flash)","body_type":"Sedan","transmission":"Avtomat","fuel_type":"Benzin","seats":5,"mileage":52000,"region":"Toshkent","city":"Toshkent shahri","district":"Mirzo Ulug‘bek tumani","pickup_address":"Buyuk Ipak Yo‘li metro","daily_price":380000,"deposit":1200000,"min_rental_days":2,"min_age":22,"min_experience":2,"daily_km_limit":250,"smoking_allowed":0,"pets_allowed":0,"abroad_allowed":0,"extra_rules":"Konditsioner a‘lo holatda. Magicar 905 pult mavjud.","status":"ACTIVE","rating":4.8,"review_count":9,"main_image":"https://i.pinimg.com/736x/c2/f9/75/c2f975fd196a77c40e2b09b31605829b.jpg","created_at":"2026-10-03 10:50:28","images":["https://i.pinimg.com/736x/c2/f9/75/c2f975fd196a77c40e2b09b31605829b.jpg","https://i.pinimg.com/736x/af/ad/cd/afadcdbcbe8b270111c67ce5bba45921.jpg","https://i.pinimg.com/736x/34/93/62/34936201041fb5721920136ee13ce924.jpg","https://i.pinimg.com/736x/0a/5d/cd/0a5dcd632356ee12603f6a5b68c1727d.jpg"]},{"id":3,"owner_id":1,"brand":"Chevrolet","model":"Malibu 2 Turbo","year":2023,"color":"Qora (Black Pearl)","body_type":"Sedan","transmission":"Avtomat","fuel_type":"Benzin","seats":5,"mileage":26000,"region":"Toshkent","city":"Toshkent shahri","district":"Chilonzor tumani","pickup_address":"Novza metro yaqinida","daily_price":850000,"deposit":2500000,"min_rental_days":1,"min_age":24,"min_experience":3,"daily_km_limit":300,"smoking_allowed":0,"pets_allowed":0,"abroad_allowed":0,"extra_rules":"Premium biznes sinfidagi avtomobil. Faqat 95/98 benzin quyiladi.","status":"ACTIVE","rating":5,"review_count":21,"main_image":"https://i.pinimg.com/736x/59/b3/8f/59b38fb3499068de7c2bd490820071ab.jpg","created_at":"2026-10-03 10:50:28","images":["https://i.pinimg.com/736x/59/b3/8f/59b38fb3499068de7c2bd490820071ab.jpg","https://i.pinimg.com/736x/85/67/5d/85675d243437e51683e603dd607ab9ec.jpg","https://i.pinimg.com/736x/1e/22/62/1e2262fe02bbf8a31ba60328d249d741.jpg","https://i.pinimg.com/736x/28/62/94/286294118cc66985c6ee9d732b51e46b.jpg"]},{"id":4,"owner_id":1,"brand":"Kia","model":"K5 GT-Line","year":2023,"color":"To‘q kulrang (Steel Gray)","body_type":"Sedan","transmission":"Avtomat","fuel_type":"Benzin","seats":5,"mileage":31000,"region":"Samarqand","city":"Samarqand shahri","district":"Markaz","pickup_address":"Registon maydoni atrofida","daily_price":900000,"deposit":2500000,"min_rental_days":1,"min_age":23,"min_experience":2,"daily_km_limit":350,"smoking_allowed":0,"pets_allowed":0,"abroad_allowed":0,"extra_rules":"Panorama tom, zamonaviy multimedia, CarPlay mavjud.","status":"ACTIVE","rating":4.9,"review_count":17,"main_image":"https://i.pinimg.com/736x/47/8b/f6/478bf61e4712ba383a76118a6558bfd4.jpg","created_at":"2026-10-03 10:50:28","images":["https://i.pinimg.com/736x/47/8b/f6/478bf61e4712ba383a76118a6558bfd4.jpg","https://i.pinimg.com/736x/b9/55/64/b955640a5f38367534f086184bd9c642.jpg","https://i.pinimg.com/736x/4b/ea/b1/4beab1a8f8805ee53e3eb53941798c46.jpg","https://i.pinimg.com/736x/19/56/d8/1956d87618817ccd8be1addcf83adc62.jpg"]},{"id":5,"owner_id":1,"brand":"Toyota","model":"Camry 75","year":2022,"color":"Oq dur (White Pearl)","body_type":"Sedan","transmission":"Avtomat","fuel_type":"Gibrid","seats":5,"mileage":44000,"region":"Toshkent","city":"Toshkent shahri","district":"Yakkasaroy tumani","pickup_address":"Aeroport hududida yoki markazda yetkazib berish mumkin","daily_price":1100000,"deposit":3000000,"min_rental_days":2,"min_age":25,"min_experience":3,"daily_km_limit":400,"smoking_allowed":0,"pets_allowed":0,"abroad_allowed":0,"extra_rules":"Gibrid tizim, yoqilg‘i sarfi juda tejamkor (5L/100km).","status":"ACTIVE","rating":5,"review_count":28,"main_image":"https://i.pinimg.com/736x/01/98/fb/0198fbefa0f099f0658146b8583bf721.jpg","created_at":"2026-10-03 10:50:28","images":["https://i.pinimg.com/736x/01/98/fb/0198fbefa0f099f0658146b8583bf721.jpg","https://i.pinimg.com/736x/e5/ac/a0/e5aca01399c8a6ebd70129c9bf34fda8.jpg","https://i.pinimg.com/736x/97/03/52/9703528e598c3ff3bf5328bdb776fc69.jpg","https://i.pinimg.com/736x/09/f5/c9/09f5c940fc50f0f6abddf6946971e233.jpg"]},{"id":6,"owner_id":1,"brand":"Hyundai","model":"Elantra","year":2023,"color":"Kulrang (Cyber Gray)","body_type":"Sedan","transmission":"Avtomat","fuel_type":"Benzin","seats":5,"mileage":28000,"region":"Buxoro","city":"Buxoro shahri","district":"Markaz","pickup_address":"Temir yo‘l vokzali yaqini","daily_price":650000,"deposit":1500000,"min_rental_days":1,"min_age":21,"min_experience":2,"daily_km_limit":300,"smoking_allowed":0,"pets_allowed":0,"abroad_allowed":0,"extra_rules":"Toza va yangi avtomobil. Sayyohlar va mehmonlar uchun qulay.","status":"ACTIVE","rating":4.8,"review_count":8,"main_image":"https://i.pinimg.com/736x/f9/7b/3f/f97b3fa089027b813c2c0a41d91730a4.jpg","created_at":"2026-10-03 10:50:28","images":["https://i.pinimg.com/736x/f9/7b/3f/f97b3fa089027b813c2c0a41d91730a4.jpg","https://i.pinimg.com/736x/b4/60/08/b460082a0796694ef68bdc8e5e268924.jpg","https://i.pinimg.com/736x/ba/a4/9c/baa49cadc14ec6cffe3e0c246939cf6b.jpg","https://i.pinimg.com/736x/e2/d4/40/e2d4408b2a223bf0d4fed9f4e4cbdb5d.jpg"]},{"id":7,"owner_id":3,"brand":"Kia","model":"Sonet","year":2024,"color":"Oq","body_type":"Krossover","transmission":"Avtomat","fuel_type":"Benzin","seats":5,"mileage":12000,"region":"Toshkent","city":"Toshkent shahri","district":"","pickup_address":"","daily_price":450000,"deposit":1000000,"min_rental_days":1,"min_age":21,"min_experience":1,"daily_km_limit":300,"smoking_allowed":0,"pets_allowed":0,"abroad_allowed":0,"extra_rules":"","status":"ACTIVE","rating":5,"review_count":1,"main_image":"https://i.pinimg.com/736x/99/17/17/991717216face66b88fdabebfb20ce4d.jpg","created_at":"2026-10-03 11:02:26","images":["https://i.pinimg.com/736x/99/17/17/991717216face66b88fdabebfb20ce4d.jpg","https://i.pinimg.com/736x/3f/05/84/3f0584400a4d54964f3af78f29959e90.jpg","https://i.pinimg.com/736x/e6/d4/55/e6d455913972f456466501091edd9501.jpg","https://i.pinimg.com/736x/87/e7/8b/87e78bb57b0f714a45614056c7ac7865.jpg"]},{"id":8,"owner_id":4,"brand":"Kia","model":"Sonet","year":2024,"color":"Oq","body_type":"Krossover","transmission":"Avtomat","fuel_type":"Benzin","seats":5,"mileage":12000,"region":"Toshkent","city":"Toshkent shahri","district":"","pickup_address":"","daily_price":450000,"deposit":1000000,"min_rental_days":1,"min_age":21,"min_experience":1,"daily_km_limit":300,"smoking_allowed":0,"pets_allowed":0,"abroad_allowed":0,"extra_rules":"","status":"ACTIVE","rating":5,"review_count":1,"main_image":"https://i.pinimg.com/736x/99/17/17/991717216face66b88fdabebfb20ce4d.jpg","created_at":"2026-10-03 11:02:55","images":["https://i.pinimg.com/736x/99/17/17/991717216face66b88fdabebfb20ce4d.jpg","https://i.pinimg.com/736x/3f/05/84/3f0584400a4d54964f3af78f29959e90.jpg","https://i.pinimg.com/736x/e6/d4/55/e6d455913972f456466501091edd9501.jpg","https://i.pinimg.com/736x/87/e7/8b/87e78bb57b0f714a45614056c7ac7865.jpg"]}];
+
+    function getLocalData(key, defaultVal) {
+      try {
+        const val = localStorage.getItem(key);
+        return val ? JSON.parse(val) : defaultVal;
+      } catch (e) {
+        return defaultVal;
+      }
+    }
+
+    function setLocalData(key, val) {
+      try {
+        localStorage.setItem(key, JSON.stringify(val));
+      } catch (e) {
+        console.error('Storage error:', e);
+      }
+    }
+
+    // Initialize database in localStorage if not set
+    if (!localStorage.getItem('avtorent_db_cars') || getLocalData('avtorent_db_cars', []).length === 0) {
+      setLocalData('avtorent_db_cars', INITIAL_CARS);
+    }
+    if (!localStorage.getItem('avtorent_db_users')) {
+      setLocalData('avtorent_db_users', [
+        {
+          id: 1,
+          name: 'Sayfulloh',
+          surname: 'Sharipov',
+          email: 'siusbkcnzd@gmail.com',
+          phone: '+998 90 123 45 67',
+          avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
+          role: 'admin',
+          email_verified: 1
+        }
+      ]);
+    }
+    if (!localStorage.getItem('avtorent_db_favorites')) {
+      setLocalData('avtorent_db_favorites', []);
+    }
+    if (!localStorage.getItem('avtorent_db_rentals')) {
+      setLocalData('avtorent_db_rentals', []);
+    }
+    if (!localStorage.getItem('avtorent_db_notifications')) {
+      setLocalData('avtorent_db_notifications', [
+        {
+          id: 1,
+          user_id: 1,
+          type: 'SYSTEM',
+          title: 'AvtoRent platformasiga xush kelibsiz!',
+          message: 'Tizim 100% serversiz (standalone) rejimda ishlamoqda. Barcha ma‘lumotlar brauzeringizda xavfsiz saqlanadi.',
+          link: '',
+          is_read: 0,
+          created_at: new Date().toISOString()
+        }
+      ]);
+    }
+    if (!localStorage.getItem('avtorent_db_chats')) {
+      setLocalData('avtorent_db_chats', {});
+    }
+
+    let pendingOtpCodes = {};
+
+    const state = {
+      user: null,
+      token: localStorage.getItem('avtorent_token') || null,
+      currentView: 'home',
+      cars: [],
+      carsCache: {},
+      myCars: [],
+      favorites: [],
+      rentals: [],
+      activeCarDetail: null,
+      activeConversationId: null,
+      activeRentalTab: 'renter',
+      wizardStep: 1,
+      wizardPhotos: []
+    };
+
+    // ==========================================
+    // STANDALONE API ROUTER (100% Serverless)
+    // ==========================================
+    async function apiCall(endpoint, method = 'GET', body = null, requireAuth = false) {
+      await new Promise(r => setTimeout(r, 40));
+
+      if (requireAuth && !state.token && !state.user) {
+        openAuthModal('email');
+        throw new Error('Iltimos, avval tizimga kiring.');
+      }
+
+      const [pathOnly, queryString] = endpoint.split('?');
+      const queryParams = new URLSearchParams(queryString || '');
+
+      // 1. CARS LIST: GET /cars
+      if (pathOnly === '/cars' && method === 'GET') {
+        let cars = getLocalData('avtorent_db_cars', INITIAL_CARS);
+        const favs = getLocalData('avtorent_db_favorites', []);
+
+        const q = (queryParams.get('search') || queryParams.get('q') || '').toLowerCase().trim();
+        if (q) {
+          cars = cars.filter(c => 
+            (c.brand + ' ' + c.model + ' ' + (c.city || '') + ' ' + (c.region || '')).toLowerCase().includes(q)
+          );
+        }
+
+        const brand = queryParams.get('brand');
+        if (brand && brand !== 'all') {
+          cars = cars.filter(c => c.brand.toLowerCase() === brand.toLowerCase());
+        }
+
+        const bodyType = queryParams.get('body_type');
+        if (bodyType && bodyType !== 'all') {
+          cars = cars.filter(c => (c.body_type || '').toLowerCase() === bodyType.toLowerCase());
+        }
+
+        const trans = queryParams.get('transmission');
+        if (trans && trans !== 'all') {
+          cars = cars.filter(c => (c.transmission || '').toLowerCase() === trans.toLowerCase());
+        }
+
+        const fuel = queryParams.get('fuel_type');
+        if (fuel && fuel !== 'all') {
+          cars = cars.filter(c => (c.fuel_type || '').toLowerCase() === fuel.toLowerCase());
+        }
+
+        const region = queryParams.get('region');
+        if (region && region !== 'all') {
+          cars = cars.filter(c => (c.region || '').toLowerCase() === region.toLowerCase());
+        }
+
+        const minPrice = Number(queryParams.get('min_price')) || 0;
+        const maxPrice = Number(queryParams.get('max_price')) || 0;
+        if (minPrice > 0) cars = cars.filter(c => c.daily_price >= minPrice);
+        if (maxPrice > 0) cars = cars.filter(c => c.daily_price <= maxPrice);
+
+        const sort = queryParams.get('sort');
+        const section = queryParams.get('section');
+        if (section === 'popular') {
+          cars.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        } else if (sort === 'newest') {
+          cars.sort((a, b) => (b.year || 0) - (a.year || 0) || b.id - a.id);
+        } else if (sort === 'price_asc') {
+          cars.sort((a, b) => a.daily_price - b.daily_price);
+        } else if (sort === 'price_desc') {
+          cars.sort((a, b) => b.daily_price - a.daily_price);
+        } else if (sort === 'rating') {
+          cars.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        }
+
+        const resCars = cars.map(c => ({
+          ...c,
+          is_favorite: favs.includes(c.id) ? 1 : 0
+        }));
+
+        return { count: resCars.length, cars: resCars };
+      }
+
+      // 2. SINGLE CAR: GET /cars/:id
+      if (pathOnly.startsWith('/cars/') && !pathOnly.endsWith('/favorite') && method === 'GET') {
+        const carId = Number(pathOnly.split('/')[2]);
+        const cars = getLocalData('avtorent_db_cars', INITIAL_CARS);
+        const car = cars.find(c => c.id === carId);
+        if (!car) throw new Error('Mashina topilmadi.');
+
+        const favs = getLocalData('avtorent_db_favorites', []);
+        const users = getLocalData('avtorent_db_users', []);
+        const owner = users.find(u => u.id === car.owner_id) || users[0];
+
+        return {
+          car: {
+            ...car,
+            owner_name: owner ? owner.name : 'Sayfulloh',
+            owner_surname: owner ? owner.surname : 'Sharipov',
+            owner_avatar: owner ? owner.avatar_url : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
+            is_owner: state.user ? (state.user.id === car.owner_id) : false,
+            is_favorite: favs.includes(car.id) ? 1 : 0
+          }
+        };
+      }
+
+      // 3. CREATE CAR: POST /cars
+      if (pathOnly === '/cars' && method === 'POST') {
+        const cars = getLocalData('avtorent_db_cars', INITIAL_CARS);
+        const newId = (cars.reduce((max, c) => Math.max(max, c.id), 0) || 0) + 1;
+        const newCar = {
+          id: newId,
+          owner_id: state.user ? state.user.id : 1,
+          status: 'ACTIVE',
+          rating: 5.0,
+          review_count: 0,
+          created_at: new Date().toISOString(),
+          ...body
+        };
+        if (!newCar.main_image && newCar.images && newCar.images.length) {
+          newCar.main_image = newCar.images[0];
+        }
+        cars.unshift(newCar);
+        setLocalData('avtorent_db_cars', cars);
+        return { success: true, message: 'Mashina muvaffaqiyatli qo‘shildi!', car: newCar };
+      }
+
+      // 4. DELETE CAR: DELETE /cars/:id
+      if (pathOnly.startsWith('/cars/') && method === 'DELETE') {
+        const carId = Number(pathOnly.split('/')[2]);
+        let cars = getLocalData('avtorent_db_cars', INITIAL_CARS);
+        cars = cars.filter(c => c.id !== carId);
+        setLocalData('avtorent_db_cars', cars);
+        return { success: true, message: 'Mashina o‘chirildi.' };
+      }
+
+      // 5. FAVORITES: POST /cars/:id/favorite
+      if (pathOnly.includes('/favorite') && method === 'POST') {
+        const carId = Number(pathOnly.split('/')[2]);
+        let favs = getLocalData('avtorent_db_favorites', []);
+        const exists = favs.includes(carId);
+        if (exists) {
+          favs = favs.filter(id => id !== carId);
+        } else {
+          favs.push(carId);
+        }
+        setLocalData('avtorent_db_favorites', favs);
+        return { success: true, is_favorite: !exists };
+      }
+
+      // 6. GET FAVORITES: GET /favorites
+      if (pathOnly === '/favorites' && method === 'GET') {
+        const favs = getLocalData('avtorent_db_favorites', []);
+        const cars = getLocalData('avtorent_db_cars', INITIAL_CARS);
+        const favCars = cars.filter(c => favs.includes(c.id)).map(c => ({ ...c, is_favorite: 1 }));
+        return { count: favCars.length, cars: favCars };
+      }
+
+      // 7. RENTALS: POST /rentals
+      if (pathOnly === '/rentals' && method === 'POST') {
+        const rentals = getLocalData('avtorent_db_rentals', []);
+        const newId = (rentals.reduce((max, r) => Math.max(max, r.id), 0) || 0) + 1;
+        const newRental = {
+          id: newId,
+          renter_id: state.user ? state.user.id : 1,
+          renter_name: state.user ? state.user.name : 'Foydalanuvchi',
+          renter_phone: state.user ? state.user.phone : '+998 90 000 00 00',
+          status: 'PENDING',
+          created_at: new Date().toISOString(),
+          ...body
+        };
+        rentals.unshift(newRental);
+        setLocalData('avtorent_db_rentals', rentals);
+
+        const notifs = getLocalData('avtorent_db_notifications', []);
+        notifs.unshift({
+          id: Date.now(),
+          user_id: 1,
+          type: 'RENTAL',
+          title: 'Yangi ijara so‘rovi!',
+          message: `${newRental.renter_name} mashinangizni ijaraga olish bo‘yicha so‘rov yubordi.`,
+          link: '',
+          is_read: 0,
+          created_at: new Date().toISOString()
+        });
+        setLocalData('avtorent_db_notifications', notifs);
+
+        return { success: true, message: 'Ijara so‘rovi muvaffaqiyatli yuborildi!', rental: newRental };
+      }
+
+      // 8. GET RENTALS: GET /rentals
+      if (pathOnly === '/rentals' && method === 'GET') {
+        const rentals = getLocalData('avtorent_db_rentals', []);
+        const cars = getLocalData('avtorent_db_cars', INITIAL_CARS);
+        const currentUserId = state.user ? state.user.id : 1;
+
+        const populated = rentals.map(r => {
+          const car = cars.find(c => c.id === r.car_id) || {};
+          return {
+            ...r,
+            car_brand: car.brand || 'Chevrolet',
+            car_model: car.model || 'Cobalt',
+            car_image: car.main_image || (car.images && car.images[0]) || '',
+            owner_id: car.owner_id || 1,
+            owner_name: 'Sayfulloh Sharipov',
+            owner_phone: '+998 90 123 45 67'
+          };
+        });
+
+        const asRenter = populated.filter(r => r.renter_id === currentUserId);
+        const asOwner = populated.filter(r => r.owner_id === currentUserId);
+        return { asRenter, asOwner };
+      }
+
+      // 9. UPDATE RENTAL STATUS: PUT /rentals/:id/status
+      if (pathOnly.startsWith('/rentals/') && pathOnly.endsWith('/status') && method === 'PUT') {
+        const rentalId = Number(pathOnly.split('/')[2]);
+        const rentals = getLocalData('avtorent_db_rentals', []);
+        const target = rentals.find(r => r.id === rentalId);
+        if (target) {
+          target.status = body.status;
+          setLocalData('avtorent_db_rentals', rentals);
+        }
+        return { success: true, message: 'Holat yangilandi.' };
+      }
+
+      // 10. AUTH: POST /auth/send-code
+      if (pathOnly === '/auth/send-code' && method === 'POST') {
+        const email = (body.email || '').trim().toLowerCase();
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        pendingOtpCodes[email] = code;
+
+        let users = getLocalData('avtorent_db_users', []);
+        let user = users.find(u => u.email === email);
+        if (!user) {
+          const prefix = email.split('@')[0];
+          const name = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+          user = {
+            id: (users.reduce((max, u) => Math.max(max, u.id), 0) || 0) + 1,
+            name: name,
+            surname: '',
+            email: email,
+            phone: '',
+            avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
+            role: 'user',
+            email_verified: 1
+          };
+          users.push(user);
+          setLocalData('avtorent_db_users', users);
+        }
+
+        return {
+          success: true,
+          message: `Tasdiqlash kodi emailingizga (${email}) yuborildi.`,
+          email: email,
+          dev_code: code
+        };
+      }
+
+      // 11. AUTH: POST /auth/verify-code
+      if (pathOnly === '/auth/verify-code' && method === 'POST') {
+        const email = (body.email || '').trim().toLowerCase();
+        const enteredCode = (body.code || '').trim();
+        const expectedCode = pendingOtpCodes[email];
+
+        if (expectedCode && enteredCode !== expectedCode) {
+          throw new Error('Tasdiqlash kodi noto‘g‘ri.');
+        }
+
+        let users = getLocalData('avtorent_db_users', []);
+        let user = users.find(u => u.email === email);
+        if (!user) {
+          const prefix = email.split('@')[0];
+          user = {
+            id: (users.reduce((max, u) => Math.max(max, u.id), 0) || 0) + 1,
+            name: prefix.charAt(0).toUpperCase() + prefix.slice(1),
+            surname: '',
+            email: email,
+            phone: '',
+            avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
+            role: 'user',
+            email_verified: 1
+          };
+          users.push(user);
+          setLocalData('avtorent_db_users', users);
+        }
+
+        const token = 'mock_jwt_token_' + user.id + '_' + Date.now();
+        state.token = token;
+        state.user = user;
+        localStorage.setItem('avtorent_token', token);
+        localStorage.setItem('avtorent_active_user', JSON.stringify(user));
+
+        return {
+          success: true,
+          message: 'Muvaffaqiyatli kirdingiz!',
+          token,
+          user
+        };
+      }
+
+      // 12. AUTH: POST /auth/login
+      if (pathOnly === '/auth/login' && method === 'POST') {
+        const email = (body.email || '').trim().toLowerCase();
+        let users = getLocalData('avtorent_db_users', []);
+        let user = users.find(u => u.email === email) || users[0];
+        const token = 'mock_jwt_token_' + user.id + '_' + Date.now();
+        state.token = token;
+        state.user = user;
+        localStorage.setItem('avtorent_token', token);
+        localStorage.setItem('avtorent_active_user', JSON.stringify(user));
+        return { success: true, token, user };
+      }
+
+      // 13. AUTH: GET /auth/me
+      if (pathOnly === '/auth/me' && method === 'GET') {
+        const savedUser = getLocalData('avtorent_active_user', null);
+        let user = savedUser || state.user;
+        if (!user && state.token) {
+          const users = getLocalData('avtorent_db_users', []);
+          user = users[0];
+        }
+        if (!user) {
+          throw new Error('Foydalanuvchi tizimga kirmagan.');
+        }
+        const notifs = getLocalData('avtorent_db_notifications', []);
+        const unreadNotifs = notifs.filter(n => n.is_read === 0).length;
+        user.stats = {
+          unreadNotifications: unreadNotifs,
+          unreadMessages: 0
+        };
+        return { user };
+      }
+
+      // 14. PROFILE: GET /profile
+      if (pathOnly === '/profile' && method === 'GET') {
+        const user = state.user || getLocalData('avtorent_active_user', null) || getLocalData('avtorent_db_users', [])[0];
+        return { user };
+      }
+
+      // 15. PROFILE: PUT /profile
+      if (pathOnly === '/profile' && method === 'PUT') {
+        let users = getLocalData('avtorent_db_users', []);
+        const currentId = state.user ? state.user.id : 1;
+        let u = users.find(x => x.id === currentId);
+        if (u) {
+          Object.assign(u, body);
+        } else {
+          u = { id: currentId, ...body };
+          users.push(u);
+        }
+        setLocalData('avtorent_db_users', users);
+        setLocalData('avtorent_active_user', u);
+        state.user = u;
+        return { success: true, message: 'Profil muvaffaqiyatli saqlandi!', user: u };
+      }
+
+      // 16. MY CARS: GET /my-cars
+      if (pathOnly === '/my-cars' && method === 'GET') {
+        const cars = getLocalData('avtorent_db_cars', INITIAL_CARS);
+        const currentId = state.user ? state.user.id : 1;
+        const myCars = cars.filter(c => c.owner_id === currentId);
+        return { count: myCars.length, cars: myCars };
+      }
+
+      // 17. UPLOAD: POST /upload
+      if (pathOnly === '/upload' && method === 'POST') {
+        return { success: true, url: body.base64Data };
+      }
+
+      // 18. NOTIFICATIONS: GET /notifications
+      if (pathOnly === '/notifications' && method === 'GET') {
+        const notifs = getLocalData('avtorent_db_notifications', []);
+        return { notifications: notifs };
+      }
+
+      // 19. NOTIFICATIONS: PUT /notifications/:id/read
+      if (pathOnly.startsWith('/notifications/') && method === 'PUT') {
+        const notifs = getLocalData('avtorent_db_notifications', []);
+        notifs.forEach(n => n.is_read = 1);
+        setLocalData('avtorent_db_notifications', notifs);
+        return { success: true };
+      }
+
+      // 20. CHAT CONVERSATIONS: GET /chat/conversations
+      if (pathOnly === '/chat/conversations' && method === 'GET') {
+        const chats = getLocalData('avtorent_db_chats', {});
+        const list = Object.keys(chats).map(carId => {
+          const cars = getLocalData('avtorent_db_cars', INITIAL_CARS);
+          const car = cars.find(c => c.id === Number(carId)) || {};
+          const msgs = chats[carId] || [];
+          const lastMsg = msgs[msgs.length - 1] || {};
+          return {
+            id: Number(carId),
+            car_id: Number(carId),
+            car_brand: car.brand || 'Chevrolet',
+            car_model: car.model || 'Cobalt',
+            car_image: car.main_image || '',
+            owner_name: 'Sayfulloh Sharipov',
+            owner_avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
+            last_message: lastMsg.text || 'Xabar yo‘q',
+            last_message_time: lastMsg.time || 'Hozir'
+          };
+        });
+        return { conversations: list };
+      }
+
+      // 21. CHAT MESSAGES: GET /chat/messages/:id
+      if (pathOnly.startsWith('/chat/messages/') && method === 'GET') {
+        const carId = pathOnly.split('/')[3];
+        const chats = getLocalData('avtorent_db_chats', {});
+        const msgs = chats[carId] || [
+          { sender: 'owner', text: 'Assalomu alaykum! Mashina bo‘yicha qanday savolingiz bor?', time: '10:00' }
+        ];
+        return { messages: msgs };
+      }
+
+      // 22. CHAT SEND: POST /chat/messages
+      if (pathOnly === '/chat/messages' && method === 'POST') {
+        const carId = String(body.car_id || body.conversation_id || 1);
+        const chats = getLocalData('avtorent_db_chats', {});
+        if (!chats[carId]) {
+          chats[carId] = [
+            { sender: 'owner', text: 'Assalomu alaykum! Mashina bo‘yicha qanday savolingiz bor?', time: '10:00' }
+          ];
+        }
+        chats[carId].push({
+          sender: 'me',
+          text: body.message,
+          time: new Date().toLocaleTimeString().slice(0, 5)
+        });
+        setLocalData('avtorent_db_chats', chats);
+
+        setTimeout(() => {
+          const updated = getLocalData('avtorent_db_chats', {});
+          if (updated[carId]) {
+            const replies = [
+              'Albatta, mashina ko‘rsatilgan sanalarda to‘liq bo‘sh.',
+              'Saloni toza, texnik holati a‘lo darajada.',
+              'Ijaraga olish so‘rovingizni qabul qildim, kelishingiz mumkin!',
+              'Hujjatlardan faqat pasport va haydovchilik guvohnomasi kerak bo‘ladi.'
+            ];
+            const randReply = replies[Math.floor(Math.random() * replies.length)];
+            updated[carId].push({
+              sender: 'owner',
+              text: randReply,
+              time: new Date().toLocaleTimeString().slice(0, 5)
+            });
+            setLocalData('avtorent_db_chats', updated);
+            if (state.currentView === 'chat' && typeof renderChatMessages === 'function') {
+              renderChatMessages(updated[carId]);
+            }
+          }
+        }, 1000);
+
+        return { success: true, message: 'Yuborildi' };
+      }
+
+      return { success: true };
+    }
+
+    // ==========================================
+    // TOAST & MODAL HELPERS
+    // ==========================================
+    let lastToastMessage = '';
+    let lastToastTime = 0;
+
+    function showToast(message, type = 'success') {
+      if (!message) return;
+
+      // Clean friendly translation for network connection hiccups
+      if (typeof message === 'string' && (message.toLowerCase().includes('failed to fetch') || message.toLowerCase().includes('networkerror'))) {
+        message = 'Server bilan aloqa kutilmoqda. Backend ishlayotganini tekshiring.';
+      }
+
+      const now = Date.now();
+      // Deduplicate identical toasts within 2.5 seconds
+      if (message === lastToastMessage && now - lastToastTime < 2500) {
+        return;
+      }
+      lastToastMessage = message;
+      lastToastTime = now;
+
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<span>${type === 'success' ? '✓' : '⚠️'}</span><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // Close modals on backdrop click
+    document.querySelectorAll('.modal-backdrop').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+    });
+
+    // ==========================================
+    // NAVIGATION
+    // ==========================================
+    function navigateTo(viewName, params = null) {
+      state.currentView = viewName;
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById(`view-${viewName}`);
+      if (target) target.classList.add('active');
+
+      // Update mobile bottom nav active class
+      document.querySelectorAll('.bottom-nav-item').forEach(btn => {
+        const span = btn.querySelector('span:last-child').textContent.toLowerCase();
+        btn.classList.toggle('active', 
+          (viewName === 'home' && span.includes('bosh')) ||
+          (viewName === 'cars' && span.includes('mashina')) ||
+          (viewName === 'favorites' && span.includes('yoqtir')) ||
+          (viewName === 'rentals' && span.includes('ijara')) ||
+          (viewName === 'profile' && span.includes('profil'))
+        );
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // View lifecycle actions
+      if (viewName === 'home') {
+        loadHomeCars();
+      } else if (viewName === 'cars') {
+        loadCatalogCars();
+      } else if (viewName === 'favorites') {
+        loadFavorites();
+      } else if (viewName === 'rentals') {
+        loadRentals();
+      } else if (viewName === 'chat') {
+        loadConversations();
+      } else if (viewName === 'profile') {
+        loadProfile();
+      }
+    }
+
+    // ==========================================
+    // AUTHENTICATION
+    // ==========================================
+    let pendingVerifyEmail = '';
+
+    function openAuthModal(mode = 'email') {
+      switchAuthMode(mode);
+      openModal('authModal');
+    }
+
+    function switchAuthMode(mode) {
+      const emailForm = document.getElementById('formEmailAuth');
+      const verifyForm = document.getElementById('formVerifyCode');
+      const passForm = document.getElementById('formPasswordLogin');
+      
+      if (!emailForm || !verifyForm) return;
+
+      const isEmail = mode === 'email' || mode === 'login' || mode === 'register';
+      const isCode = mode === 'code' || mode === 'verify';
+      const isPass = mode === 'password';
+
+      emailForm.style.display = isEmail ? 'block' : 'none';
+      verifyForm.style.display = isCode ? 'block' : 'none';
+      if (passForm) passForm.style.display = isPass ? 'block' : 'none';
+
+      const titleEl = document.getElementById('authModalTitle');
+      if (titleEl) {
+        if (isEmail) titleEl.textContent = 'Tizimga kirish';
+        else if (isCode) titleEl.textContent = 'Email tasdiqlash kodi';
+        else if (isPass) titleEl.textContent = 'Parol bilan kirish';
+      }
+
+      if (isEmail) {
+        setTimeout(() => {
+          const inp = document.getElementById('authEmailInput');
+          if (inp) inp.focus();
+        }, 150);
+      } else if (isCode) {
+        setTimeout(() => {
+          const cd1 = document.getElementById('cd1');
+          if (cd1) cd1.focus();
+        }, 150);
+      }
+    }
+
+    async function checkAuthSession() {
+      if (!state.token) {
+        renderAuthHeader();
+        return;
+      }
+      try {
+        const data = await apiCall('/auth/me', 'GET', null, false);
+        state.user = data.user;
+        renderAuthHeader();
+        updateBadges(data.user.stats);
+      } catch (err) {
+        state.token = null;
+        state.user = null;
+        localStorage.removeItem('avtorent_token');
+        renderAuthHeader();
+      }
+    }
+
+    function renderAuthHeader() {
+      const container = document.getElementById('authHeaderBlock');
+      if (state.user) {
+        const avatar = state.user.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80';
+        container.innerHTML = `
+          <button class="user-btn" onclick="navigateTo('profile')">
+            <img src="${avatar}" class="user-avatar-small" alt="User">
+            <span>${state.user.name}</span>
+          </button>
+        `;
+      } else {
+        container.innerHTML = `
+          <button class="btn-primary" onclick="openAuthModal('email')">Kirish</button>
+        `;
+      }
+    }
+
+    function updateBadges(stats) {
+      if (!stats) return;
+      const notifBadge = document.getElementById('notifBadge');
+      if (stats.unreadNotifications > 0) {
+        notifBadge.textContent = stats.unreadNotifications;
+        notifBadge.style.display = 'flex';
+      } else {
+        notifBadge.style.display = 'none';
+      }
+
+      const msgBadge = document.getElementById('msgBadge');
+      if (stats.unreadMessages > 0) {
+        msgBadge.textContent = stats.unreadMessages;
+        msgBadge.style.display = 'flex';
+      } else {
+        msgBadge.style.display = 'none';
+      }
+    }
+
+    async function handleSendOtpSubmit(e) {
+      if (e) e.preventDefault();
+      const emailInput = document.getElementById('authEmailInput');
+      const email = emailInput ? emailInput.value.trim() : '';
+      if (!email || !email.includes('@')) {
+        showToast('Iltimos, to‘g‘ri email manzilini kiriting!', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btnSendOtpSubmit');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>Kod yuborilmoqda...</span>';
+      }
+
+      try {
+        const res = await apiCall('/auth/send-code', 'POST', { email });
+        pendingVerifyEmail = email;
+        const targetText = document.getElementById('otpTargetEmailText');
+        if (targetText) targetText.textContent = email;
+
+        // Clear previous digits
+        for (let i = 1; i <= 6; i++) {
+          const cd = document.getElementById(`cd${i}`);
+          if (cd) cd.value = '';
+        }
+
+        switchAuthMode('code');
+        if (res.dev_code) {
+          const devBanner = document.getElementById('devCodeBanner');
+          const devDisplay = document.getElementById('devCodeDisplay');
+          if (devBanner && devDisplay) {
+            devDisplay.textContent = res.dev_code;
+            devBanner.style.display = 'block';
+          }
+          autoFillOtp(res.dev_code);
+        }
+        showToast(res.message || 'Tasdiqlash kodi yuborildi!');
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>Tasdiqlash kodini olish →</span>';
+        }
+      }
+    }
+
+    function handleCodeKey(el, idx, event) {
+      const key = event.key;
+      if (key === 'Backspace') {
+        if (el.value === '' && idx > 1) {
+          const prev = document.getElementById(`cd${idx - 1}`);
+          if (prev) {
+            prev.focus();
+            prev.value = '';
+          }
+        }
+        return;
+      }
+      
+      // Keep only numbers
+      el.value = el.value.replace(/[^0-9]/g, '');
+
+      if (el.value.length >= 1) {
+        el.value = el.value.slice(0, 1);
+        if (idx < 6) {
+          const next = document.getElementById(`cd${idx + 1}`);
+          if (next) next.focus();
+        } else if (idx === 6) {
+          const code = [1, 2, 3, 4, 5, 6].map(i => {
+            const inp = document.getElementById(`cd${i}`);
+            return inp ? inp.value.trim() : '';
+          }).join('');
+          if (code.length === 6) {
+            handleVerifyOtpSubmit(event);
+          }
+        }
+      }
+    }
+
+    function handleCodePaste(event) {
+      event.preventDefault();
+      const paste = (event.clipboardData || window.clipboardData).getData('text');
+      const digits = paste.replace(/\D/g, '').slice(0, 6);
+      if (!digits) return;
+      for (let i = 0; i < digits.length; i++) {
+        const inp = document.getElementById(`cd${i + 1}`);
+        if (inp) inp.value = digits[i];
+      }
+      if (digits.length === 6) {
+        const lastInp = document.getElementById('cd6');
+        if (lastInp) lastInp.focus();
+        handleVerifyOtpSubmit(event);
+      } else {
+        const nextInp = document.getElementById(`cd${digits.length + 1}`);
+        if (nextInp) nextInp.focus();
+      }
+    }
+
+    async function handleVerifyOtpSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const code = [1, 2, 3, 4, 5, 6].map(i => {
+        const inp = document.getElementById(`cd${i}`);
+        return inp ? inp.value.trim() : '';
+      }).join('');
+
+      if (code.length !== 6) {
+        showToast('Iltimos, 6 xonali tasdiqlash kodini to‘liq kiriting.', 'error');
+        return;
+      }
+
+      const email = pendingVerifyEmail || (document.getElementById('authEmailInput') ? document.getElementById('authEmailInput').value.trim() : '');
+      if (!email) {
+        showToast('Email manzili topilmadi. Qaytadan urinib ko‘ring.', 'error');
+        switchAuthMode('email');
+        return;
+      }
+
+      const btn = document.getElementById('btnVerifyOtpSubmit');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>Tekshirilmoqda...</span>';
+      }
+
+      try {
+        const res = await apiCall('/auth/verify-code', 'POST', { email, code });
+        state.token = res.token;
+        state.user = res.user;
+        localStorage.setItem('avtorent_token', res.token);
+        closeModal('authModal');
+        showToast('Xush kelibsiz, ' + (res.user.name || 'foydalanuvchi') + '!');
+        renderAuthHeader();
+        checkAuthSession();
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>Tasdiqlash va Kirish</span>';
+        }
+      }
+    }
+
+    function autoFillOtp(codeStr) {
+      if (!codeStr) return;
+      const clean = String(codeStr).replace(/\D/g, '').slice(0, 6);
+      for (let i = 0; i < clean.length; i++) {
+        const inp = document.getElementById(`cd${i + 1}`);
+        if (inp) inp.value = clean[i];
+      }
+      const lastInp = document.getElementById('cd' + Math.min(clean.length, 6));
+      if (lastInp) lastInp.focus();
+    }
+
+    async function resendCurrentOtpCode() {
+      const email = pendingVerifyEmail || (document.getElementById('authEmailInput') ? document.getElementById('authEmailInput').value.trim() : '');
+      if (!email) {
+        showToast('Email topilmadi.', 'error');
+        switchAuthMode('email');
+        return;
+      }
+      try {
+        const res = await apiCall('/auth/send-code', 'POST', { email });
+        if (res.dev_code) {
+          const devBanner = document.getElementById('devCodeBanner');
+          const devDisplay = document.getElementById('devCodeDisplay');
+          if (devBanner && devDisplay) {
+            devDisplay.textContent = res.dev_code;
+            devBanner.style.display = 'block';
+          }
+          autoFillOtp(res.dev_code);
+        }
+        showToast('Yangi tasdiqlash kodi yuborildi!');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handlePasswordLoginSubmit(e) {
+      if (e) e.preventDefault();
+      const email = document.getElementById('passLoginEmail').value;
+      const password = document.getElementById('passLoginPassword').value;
+      const btn = document.getElementById('btnPassLoginSubmit');
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Kirilmoqda...';
+      }
+      try {
+        const res = await apiCall('/auth/login', 'POST', { email, password });
+        state.token = res.token;
+        state.user = res.user;
+        localStorage.setItem('avtorent_token', res.token);
+        closeModal('authModal');
+        showToast('Xush kelibsiz, ' + res.user.name + '!');
+        renderAuthHeader();
+        checkAuthSession();
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Kirish';
+        }
+      }
+    }
+
+    function logoutUser() {
+      state.token = null;
+      state.user = null;
+      localStorage.removeItem('avtorent_token');
+      renderAuthHeader();
+      navigateTo('home');
+      showToast('Tizimdan chiqildi.');
+    }
+
+    // ==========================================
+    // CARS & MARKETPLACE
+    // ==========================================
+    async function loadHomeCars() {
+      try {
+        const popData = await apiCall('/cars?section=popular', 'GET');
+        renderCarGrid('popularCarsGrid', popData.cars);
+
+        const newData = await apiCall('/cars?sort=newest', 'GET');
+        renderCarGrid('newCarsGrid', newData.cars);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadCatalogCars() {
+      applyFilters();
+    }
+
+    async function applyFilters() {
+      const brand = document.getElementById('filterBrand').value;
+      const minPrice = document.getElementById('filterMinPrice').value;
+      const maxPrice = document.getElementById('filterMaxPrice').value;
+      const bodyType = document.getElementById('filterBodyType').value;
+      const transmission = document.getElementById('filterTransmission').value;
+      const fuelType = document.getElementById('filterFuelType').value;
+      const region = document.getElementById('filterRegion').value;
+      const sort = document.getElementById('sortSelect').value;
+
+      const params = new URLSearchParams();
+      if (brand && brand !== 'all') params.append('brand', brand);
+      if (minPrice) params.append('min_price', minPrice);
+      if (maxPrice) params.append('max_price', maxPrice);
+      if (bodyType && bodyType !== 'all') params.append('body_type', bodyType);
+      if (transmission && transmission !== 'all') params.append('transmission', transmission);
+      if (fuelType && fuelType !== 'all') params.append('fuel_type', fuelType);
+      if (region && region !== 'all') params.append('region', region);
+      if (sort) params.append('sort', sort);
+
+      try {
+        const data = await apiCall(`/cars?${params.toString()}`);
+        document.getElementById('catalogCount').textContent = data.count;
+        renderCarGrid('catalogCarsGrid', data.cars);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function resetFilters() {
+      document.getElementById('filterBrand').value = 'all';
+      document.getElementById('filterMinPrice').value = '';
+      document.getElementById('filterMaxPrice').value = '';
+      document.getElementById('filterBodyType').value = 'all';
+      document.getElementById('filterTransmission').value = 'all';
+      document.getElementById('filterFuelType').value = 'all';
+      document.getElementById('filterRegion').value = 'all';
+      applyFilters();
+    }
+
+    function handleSearch() {
+      const term = document.getElementById('globalSearchInput').value.trim();
+      navigateTo('cars');
+      apiCall(`/cars?search=${encodeURIComponent(term)}`).then(data => {
+        document.getElementById('catalogCount').textContent = data.count;
+        renderCarGrid('catalogCarsGrid', data.cars);
+      });
+    }
+
+    function handleHeroSearch() {
+      const brand = document.getElementById('heroBrandInput').value.trim();
+      const region = document.getElementById('heroRegionSelect').value;
+      navigateTo('cars');
+      const params = new URLSearchParams();
+      if (brand) params.append('search', brand);
+      if (region) params.append('region', region);
+      apiCall(`/cars?${params.toString()}`).then(data => {
+        document.getElementById('catalogCount').textContent = data.count;
+        renderCarGrid('catalogCarsGrid', data.cars);
+      });
+    }
+
+    function filterByCategory(type, btn) {
+      document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      navigateTo('cars');
+      if (type === 'all') {
+        resetFilters();
+      } else if (type === 'Avtomat') {
+        document.getElementById('filterTransmission').value = 'Avtomat';
+        applyFilters();
+      } else {
+        document.getElementById('filterBodyType').value = type;
+        applyFilters();
+      }
+    }
+
+    function filterBySection(sec, btn) {
+      document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      navigateTo('cars');
+      apiCall(`/cars?section=${sec}`).then(data => {
+        document.getElementById('catalogCount').textContent = data.count;
+        renderCarGrid('catalogCarsGrid', data.cars);
+      });
+    }
+
+    function renderCarGrid(targetId, cars) {
+      const container = document.getElementById(targetId);
+      if (!container) return;
+
+      if (!cars || cars.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-state-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.6 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+            </div>
+            <div class="empty-state-title">Hozircha mashinalar topilmadi</div>
+            <div class="empty-state-desc">Filtr parametrlarini o‘zgartirib ko‘ring yoki barcha e‘lonlarni oching.</div>
+          </div>
+        `;
+        return;
+      }
+
+      // Populate carsCache for instant zero-lag navigation when clicked
+      if (!state.carsCache) state.carsCache = {};
+      cars.forEach(car => {
+        state.carsCache[car.id] = car;
+      });
+
+      container.innerHTML = cars.map(car => `
+        <div class="car-card" onclick="openCarDetail(${car.id})">
+          <div class="car-card-image-wrap">
+            <img src="${car.main_image}" class="car-card-img" alt="${car.brand} ${car.model}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80'">
+            <span class="car-badge-year">${car.year}</span>
+            <button class="fav-btn ${car.is_favorite ? 'active' : ''}" onclick="toggleFavorite(event, ${car.id}, this)" title="Sevimlilarga saqlash">
+              ${car.is_favorite 
+                ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>'
+                : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>'}
+            </button>
+          </div>
+          <div class="car-card-body">
+            <h3 class="car-card-title">${car.brand} ${car.model}</h3>
+            <div class="car-card-meta">
+              <span class="car-rating">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                ${(Number(car.rating) || 5.0).toFixed(1)}
+              </span>
+              <span class="car-location">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                ${car.city || car.region || 'Toshkent'}
+              </span>
+            </div>
+            <div class="car-tags">
+              <span class="car-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                ${car.transmission || 'Avtomat'}
+              </span>
+              <span class="car-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                ${car.fuel_type || 'Benzin'}
+              </span>
+              <span class="car-tag">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                ${car.seats || 5} o‘rindiq
+              </span>
+            </div>
+            <div class="car-card-footer">
+              <div class="car-price-wrap">
+                <span class="car-price">${(car.daily_price || 350000).toLocaleString()} so‘m</span>
+                <span class="car-price-unit">/ kun</span>
+              </div>
+              <button class="btn-rent-card" onclick="event.stopPropagation(); openCarDetail(${car.id})">
+                <span>Ijaraga olish</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function toggleFavorite(e, carId, btn) {
+      if (e) e.stopPropagation();
+      if (!state.token) {
+        openAuthModal('login');
+        return;
+      }
+
+      const isFav = btn.classList.contains('active');
+      try {
+        if (isFav) {
+          await apiCall(`/cars/${carId}/favorite`, 'DELETE', null, true);
+          btn.classList.remove('active');
+          btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>';
+          showToast('Sevimlilardan olib tashlandi');
+        } else {
+          await apiCall(`/cars/${carId}/favorite`, 'POST', null, true);
+          btn.classList.add('active');
+          btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>';
+          showToast('Sevimlilarga qo‘shildi');
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // ==========================================
+    // CAR DETAIL & RENTAL CALCULATOR
+    // ==========================================
+    async function openCarDetail(carId) {
+      if (!carId) return;
+      const numId = Number(carId);
+
+      // Instant cache render: zero delay, ultra-smooth transition
+      let car = (state.carsCache && state.carsCache[numId]) || (state.cars && state.cars.find(c => c.id === numId));
+      if (car) {
+        state.activeCarDetail = car;
+        renderCarDetail(car);
+        navigateTo('detail');
+      }
+
+      // Fresh background fetch for reviews, booking slots & owner info
+      try {
+        const data = await apiCall(`/cars/${numId}`);
+        if (data && data.car) {
+          if (!state.carsCache) state.carsCache = {};
+          state.carsCache[numId] = data.car;
+          state.activeCarDetail = data.car;
+          renderCarDetail(data.car);
+          if (!car) navigateTo('detail');
+        }
+      } catch (err) {
+        if (!car) {
+          showToast("Mashina ma'lumotlarini yuklashda xatolik yuz berdi.", 'error');
+        }
+      }
+    }
+
+    function renderCarDetail(car) {
+      const container = document.getElementById('detailContent');
+      if (!container || !car) return;
+
+      // Safe images handling
+      const images = (Array.isArray(car.images) && car.images.length > 0)
+        ? car.images
+        : [(car.main_image || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80')];
+
+      // Calculate initial dates (today & 3 days later)
+      const now = new Date();
+      const startDateStr = now.toISOString().split('T')[0];
+      const endDate = new Date(now);
+      endDate.setDate(endDate.getDate() + 3);
+      const endDateStr = endDate.toISOString().split('T')[0];
+
+      const ratingVal = (Number(car.rating) || 5.0).toFixed(1);
+      const reviewCountVal = Number(car.review_count) || 0;
+      const mileageVal = (Number(car.mileage) || 35000).toLocaleString();
+      const dailyPriceVal = Number(car.daily_price) || 350000;
+      const depositVal = Number(car.deposit) || 1000000;
+
+      container.innerHTML = `
+        <div class="detail-grid">
+          <!-- Left: Gallery & Specs -->
+          <div>
+            <div class="gallery-main">
+              <img id="mainGalleryImg" src="${images[0]}" alt="${car.brand} ${car.model}" onerror="this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80'">
+            </div>
+            <div class="gallery-thumbs">
+              ${images.map((img, i) => `
+                <div class="thumb-item ${i === 0 ? 'active' : ''}" onclick="switchDetailPhoto('${img}', this)">
+                  <img src="${img}" alt="Thumb" onerror="this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=200&q=80'">
+                </div>
+              `).join('')}
+            </div>
+
+            <div style="margin-top:24px;">
+              <h1 style="font-size:26px; font-weight:800; color:var(--secondary);">${car.brand} ${car.model} (${car.year})</h1>
+              <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-top:8px; color:var(--text-muted); font-size:14px;">
+                <span style="color:#f59e0b; font-weight:700; display:inline-flex; align-items:center; gap:4px; background:#fffbeb; padding:2px 8px; border-radius:6px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  ${ratingVal} (${reviewCountVal} sharh)
+                </span>
+                <span style="display:inline-flex; align-items:center; gap:4px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  ${car.city || 'Toshkent shahri'}, ${car.region || 'Toshkent'}
+                </span>
+                <span style="display:inline-flex; align-items:center; gap:4px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  ${mileageVal} km
+                </span>
+              </div>
+            </div>
+
+            <div class="detail-specs-grid">
+              <div class="spec-item"><span class="spec-label">Marka va Model</span><span class="spec-value">${car.brand} ${car.model}</span></div>
+              <div class="spec-item"><span class="spec-label">Ishlab chiqarilgan yili</span><span class="spec-value">${car.year}</span></div>
+              <div class="spec-item"><span class="spec-label">Kuzov turi</span><span class="spec-value">${car.body_type || 'Sedan'}</span></div>
+              <div class="spec-item"><span class="spec-label">Rangi</span><span class="spec-value">${car.color || 'Oq'}</span></div>
+              <div class="spec-item"><span class="spec-label">Uzatma qutisi</span><span class="spec-value">${car.transmission || 'Avtomat'}</span></div>
+              <div class="spec-item"><span class="spec-label">Yoqilg‘i turi</span><span class="spec-value">${car.fuel_type || 'Benzin'}</span></div>
+              <div class="spec-item"><span class="spec-label">O‘rindiqlar soni</span><span class="spec-value">${car.seats || 5} ta</span></div>
+              <div class="spec-item"><span class="spec-label">Olib ketish manzili</span><span class="spec-value">${car.pickup_address || car.city || 'Toshkent shahri'}</span></div>
+            </div>
+
+            <div style="margin-top:20px;">
+              <h3 style="font-size:16px; font-weight:700; margin-bottom:10px;">Ijara qoidalari va talablar</h3>
+              <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; font-size:14px; color:var(--text-muted);">
+                <li>👤 Minimal haydovchi yoshi: <b>${car.min_age || 21} yosh</b></li>
+                <li>📜 Minimal haydovchilik staji: <b>${car.min_experience || 2} yil</b></li>
+                <li>🛣️ Kunlik masofa limiti: <b>${car.daily_km_limit || 250} km</b></li>
+                <li>🚬 Salonda chekish: <b>${car.smoking_allowed ? 'Ruxsat berilgan' : 'Taqiqlangan'}</b></li>
+                <li>🐾 Uy hayvonlari: <b>${car.pets_allowed ? 'Ruxsat berilgan' : 'Taqiqlangan'}</b></li>
+                ${car.extra_rules ? `<li>ℹ️ <b>Qo‘shimcha:</b> ${car.extra_rules}</li>` : ''}
+              </ul>
+            </div>
+
+            <!-- Owner Info Box -->
+            <div class="owner-box">
+              <div class="owner-info">
+                <img src="${car.owner_avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'}" class="owner-avatar" alt="Owner" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'">
+                <div>
+                  <div style="font-weight:700; color:var(--secondary); font-size:15px;">${car.owner_name || 'AvtoRent'} ${car.owner_surname || ''}</div>
+                  <div style="font-size:12px; color:var(--primary); font-weight:600;">✓ Mashina egasi (Email tasdiqlangan)</div>
+                </div>
+              </div>
+              ${!car.is_owner ? `
+                <button class="btn-secondary" onclick="startChatWithOwner(${car.id})">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                  <span>Chatda yozish</span>
+                </button>
+              ` : `
+                <span class="badge-verified">Bu sizning mashinangiz</span>
+              `}
+            </div>
+          </div>
+
+          <!-- Right: Rental Calculator -->
+          <div>
+            <div class="calc-card">
+              <div class="calc-price-head">
+                <span class="calc-price-num">${dailyPriceVal.toLocaleString()} so‘m</span>
+                <span style="color:var(--text-muted); font-size:14px;">/ kun</span>
+              </div>
+
+              <div class="calc-date-grid">
+                <div class="calc-date-field">
+                  <label>Boshlanish sanasi</label>
+                  <input type="date" id="rentalStartDate" value="${startDateStr}" min="${startDateStr}" onchange="recalcRental()">
+                </div>
+                <div class="calc-date-field">
+                  <label>Tugash sanasi</label>
+                  <input type="date" id="rentalEndDate" value="${endDateStr}" min="${startDateStr}" onchange="recalcRental()">
+                </div>
+              </div>
+
+              <div class="calc-breakdown">
+                <div class="breakdown-row">
+                  <span id="calcDaysFormula">3 kun × ${dailyPriceVal.toLocaleString()} so‘m</span>
+                  <span id="calcSubtotal">${(dailyPriceVal * 3).toLocaleString()} so‘m</span>
+                </div>
+                <div class="breakdown-row">
+                  <span>Qaytariladigan depozit:</span>
+                  <span>${depositVal.toLocaleString()} so‘m</span>
+                </div>
+                <div class="breakdown-row total">
+                  <span>Jami summa:</span>
+                  <span id="calcTotal">${(dailyPriceVal * 3).toLocaleString()} so‘m</span>
+                </div>
+              </div>
+
+              <!-- Availability Status -->
+              <div id="availabilityNotice" style="margin-bottom:14px; font-size:13px; color:#16a34a; display:flex; align-items:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#16a34a"><circle cx="12" cy="12" r="10"/></svg>
+                <span>Tanlangan sanalar bo‘sh va bron qilish mumkin</span>
+              </div>
+
+              <button class="btn-submit-rental" id="btnSubmitRental" onclick="submitRentalRequest(${car.id})">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.6 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+                <span>Ijaraga olish so‘rovini yuborish</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      recalcRental();
+    }
+
+    function switchDetailPhoto(url, thumb) {
+      const main = document.getElementById('mainGalleryImg');
+      if (main) main.src = url;
+      document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+      if (thumb) thumb.classList.add('active');
+    }
+
+    function recalcRental() {
+      const car = state.activeCarDetail;
+      if (!car) return;
+
+      const startEl = document.getElementById('rentalStartDate');
+      const endEl = document.getElementById('rentalEndDate');
+      const notice = document.getElementById('availabilityNotice');
+      const submitBtn = document.getElementById('btnSubmitRental');
+      if (!startEl || !endEl || !notice || !submitBtn) return;
+
+      const start = new Date(startEl.value);
+      const end = new Date(endEl.value);
+
+      if (end < start) {
+        notice.innerHTML = '<span style="color:#ef4444; display:flex; align-items:center; gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#ef4444"><circle cx="12" cy="12" r="10"/></svg> Tugash sanasi boshlanishidan oldin bo‘lishi mumkin emas.</span>';
+        submitBtn.disabled = true;
+        return;
+      }
+
+      const diffTime = Math.abs(end - start);
+      const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1);
+      const minDays = car.min_days || car.min_rental_days || 1;
+
+      if (diffDays < minDays) {
+        notice.innerHTML = `<span style="color:#f59e0b; display:flex; align-items:center; gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#f59e0b"><circle cx="12" cy="12" r="10"/></svg> Minimal ijara muddati ${minDays} kun.</span>`;
+        submitBtn.disabled = true;
+        return;
+      }
+
+      // Check conflict with bookedRentals
+      const startStr = startEl.value;
+      const endStr = endEl.value;
+
+      let isBooked = false;
+      if (car.bookedRentals && Array.isArray(car.bookedRentals)) {
+        for (const b of car.bookedRentals) {
+          if (!(endStr < b.start_date || startStr > b.end_date)) {
+            isBooked = true;
+            break;
+          }
+        }
+      }
+
+      if (isBooked) {
+        notice.innerHTML = '<span style="color:#ef4444; display:flex; align-items:center; gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#ef4444"><circle cx="12" cy="12" r="10"/></svg> Bu mashina tanlangan sanalarda band!</span>';
+        submitBtn.disabled = true;
+      } else {
+        notice.innerHTML = '<span style="color:#16a34a; display:flex; align-items:center; gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#16a34a"><circle cx="12" cy="12" r="10"/></svg> Tanlangan sanalar bo‘sh va mavjud</span>';
+        submitBtn.disabled = false;
+      }
+
+      const dailyPrice = Number(car.daily_price) || 350000;
+      const total = diffDays * dailyPrice;
+      const f1 = document.getElementById('calcDaysFormula');
+      const f2 = document.getElementById('calcSubtotal');
+      const f3 = document.getElementById('calcTotal');
+      if (f1) f1.textContent = `${diffDays} kun × ${dailyPrice.toLocaleString()} so‘m`;
+      if (f2) f2.textContent = `${total.toLocaleString()} so‘m`;
+      if (f3) f3.textContent = `${total.toLocaleString()} so‘m`;
+    }
+
+    async function submitRentalRequest(carId) {
+      if (!state.token) {
+        openAuthModal('login');
+        return;
+      }
+
+      const startDate = document.getElementById('rentalStartDate').value;
+      const endDate = document.getElementById('rentalEndDate').value;
+      const btn = document.getElementById('btnSubmitRental');
+
+      btn.disabled = true;
+      btn.innerHTML = '<span>Yuborilmoqda...</span>';
+
+      try {
+        const res = await apiCall('/rentals', 'POST', {
+          car_id: carId,
+          start_date: startDate,
+          end_date: endDate
+        }, true);
+
+        showToast('Ijara so‘rovingiz mashina egasiga yuborildi!');
+        navigateTo('rentals');
+      } catch (err) {
+        showToast(err.message, 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Ijaraga olish so‘rovini yuborish</span>';
+      }
+    }
+
+    // ==========================================
+    // RENTALS MANAGEMENT
+    // ==========================================
+    async function loadRentals() {
+      const container = document.getElementById('rentalsListContainer');
+      container.innerHTML = '<div style="text-align:center; padding:30px;">Yuklanmoqda...</div>';
+
+      try {
+        if (state.activeRentalTab === 'renter') {
+          const data = await apiCall('/rentals', 'GET', null, true);
+          renderRenterRentals(data.rentals);
+        } else {
+          const data = await apiCall('/owner/rentals', 'GET', null, true);
+          renderOwnerRentals(data.rentals);
+        }
+      } catch (err) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🔒</div>
+            <div class="empty-state-title">Tizimga kiring</div>
+            <div class="empty-state-desc">Ijaralaringizni ko‘rish uchun tizimga kirishingiz kerak.</div>
+            <button class="btn-primary" onclick="openAuthModal('login')">Kirish</button>
+          </div>
+        `;
+      }
+    }
+
+    function switchRentalTab(tab) {
+      state.activeRentalTab = tab;
+      document.getElementById('tabMyRentals').classList.toggle('active', tab === 'renter');
+      document.getElementById('tabOwnerRentals').classList.toggle('active', tab === 'owner');
+      loadRentals();
+    }
+
+    function renderRenterRentals(rentals) {
+      const container = document.getElementById('rentalsListContainer');
+      if (!rentals || rentals.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📅</div>
+            <div class="empty-state-title">Hozircha ijaralaringiz yo‘q</div>
+            <div class="empty-state-desc">Yoqtirgan mashinangizni tanlab, qulay sanalarga so‘rov yuborishingiz mumkin.</div>
+            <button class="btn-primary" onclick="navigateTo('cars')">Mashina tanlash</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = rentals.map(r => `
+        <div style="background:#ffffff; border-radius:var(--radius); border:1px solid var(--border); padding:18px; margin-bottom:14px; display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between;">
+          <div style="display:flex; gap:14px; align-items:center;">
+            <img src="${r.main_image}" style="width:90px; height:65px; border-radius:var(--radius-sm); object-fit:cover;" alt="Car">
+            <div>
+              <div style="font-weight:700; font-size:16px; color:var(--secondary);">${r.brand} ${r.model} (${r.year})</div>
+              <div style="font-size:13px; color:var(--text-muted); margin-top:2px;">
+                🗓️ ${r.start_date} dan ${r.end_date} gacha (${r.total_days} kun)
+              </div>
+              <div style="font-size:14px; font-weight:700; color:var(--primary); margin-top:4px;">
+                Jami: ${r.total_price.toLocaleString()} so‘m
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="status-badge status-${r.status.toLowerCase()}">${formatStatus(r.status)}</span>
+            ${r.status === 'PENDING' ? `
+              <button class="btn-secondary" onclick="cancelRental(${r.id})" style="color:var(--danger);">Bekor qilish</button>
+            ` : ''}
+            <button class="btn-secondary" onclick="startChatWithOwner(${r.car_id})">💬 Egasi bilan chat</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderOwnerRentals(rentals) {
+      const container = document.getElementById('rentalsListContainer');
+      if (!rentals || rentals.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📬</div>
+            <div class="empty-state-title">Hozircha kelgan so‘rovlar yo‘q</div>
+            <div class="empty-state-desc">Mijozlar mashinalaringizni ijaraga so‘raganda shu yerda paydo bo‘ladi.</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = rentals.map(r => `
+        <div style="background:#ffffff; border-radius:var(--radius); border:1px solid var(--border); padding:18px; margin-bottom:14px; display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between;">
+          <div style="display:flex; gap:14px; align-items:center;">
+            <img src="${r.main_image}" style="width:90px; height:65px; border-radius:var(--radius-sm); object-fit:cover;" alt="Car">
+            <div>
+              <div style="font-weight:700; font-size:16px; color:var(--secondary);">${r.brand} ${r.model}</div>
+              <div style="font-size:13px; color:var(--text-muted); margin-top:2px;">
+                Mijoz: <b>${r.renter_name} ${r.renter_surname || ''}</b> (${r.renter_phone || 'Telefon tasdiqlangach'})
+              </div>
+              <div style="font-size:13px; color:var(--text-muted);">
+                🗓️ ${r.start_date} dan ${r.end_date} gacha (${r.total_days} kun)
+              </div>
+              <div style="font-size:14px; font-weight:700; color:var(--primary); margin-top:4px;">
+                Daromad: ${r.total_price.toLocaleString()} so‘m
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="status-badge status-${r.status.toLowerCase()}">${formatStatus(r.status)}</span>
+            ${r.status === 'PENDING' ? `
+              <button class="btn-primary" onclick="acceptRental(${r.id})">✓ Qabul qilish</button>
+              <button class="btn-secondary" onclick="rejectRental(${r.id})" style="color:var(--danger);">✕ Rad etish</button>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function formatStatus(status) {
+      const map = {
+        PENDING: '🟡 Kutilmoqda',
+        CONFIRMED: '🟢 Tasdiqlangan',
+        ACTIVE: '🚙 Faol ijara',
+        COMPLETED: '✓ Yakunlangan',
+        REJECTED: '🔴 Rad etilgan',
+        CANCELLED: '⚪ Bekor qilingan'
+      };
+      return map[status] || status;
+    }
+
+    async function acceptRental(id) {
+      if (!confirm('Ushbu ijara so‘rovini tasdiqlaysizmi?')) return;
+      try {
+        await apiCall(`/rentals/${id}/accept`, 'POST', null, true);
+        showToast('Ijara tasdiqlandi!');
+        loadRentals();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function rejectRental(id) {
+      if (!confirm('Ushbu ijara so‘rovini rad etasizmi?')) return;
+      try {
+        await apiCall(`/rentals/${id}/reject`, 'POST', null, true);
+        showToast('Ijara rad etildi.');
+        loadRentals();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function cancelRental(id) {
+      if (!confirm('Haqiqatan ham bekor qilmoqchimisiz?')) return;
+      try {
+        await apiCall(`/rentals/${id}/cancel`, 'POST', null, true);
+        showToast('Ijara bekor qilindi.');
+        loadRentals();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // ==========================================
+    // CHAT (Server-Based)
+    // ==========================================
+    async function startChatWithOwner(carId) {
+      if (!state.token) {
+        openAuthModal('login');
+        return;
+      }
+      try {
+        const res = await apiCall('/conversations', 'POST', { car_id: carId }, true);
+        state.activeConversationId = res.conversationId;
+        navigateTo('chat');
+        loadConversationMessages(res.conversationId);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function loadConversations() {
+      const listContainer = document.getElementById('convList');
+      try {
+        const data = await apiCall('/conversations', 'GET', null, true);
+        if (!data.conversations || data.conversations.length === 0) {
+          listContainer.innerHTML = '<div style="padding:20px; font-size:13px; color:var(--text-muted); text-align:center;">Hozircha suhbatlar yo‘q</div>';
+          return;
+        }
+
+        listContainer.innerHTML = data.conversations.map(c => `
+          <div class="conv-item ${c.id === state.activeConversationId ? 'active' : ''}" onclick="loadConversationMessages(${c.id})">
+            <img src="${c.other_user.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80'}" class="conv-avatar" alt="Avatar">
+            <div class="conv-body">
+              <div class="conv-name">
+                <span>${c.other_user.name}</span>
+                ${c.unread_count > 0 ? `<span class="badge-count" style="position:static;">${c.unread_count}</span>` : ''}
+              </div>
+              <div class="conv-car" style="display:flex; align-items:center; gap:4px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.6 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+                <span>${c.car_name}</span>
+              </div>
+              <div class="conv-preview">${c.last_message}</div>
+            </div>
+          </div>
+        `).join('');
+
+        if (!state.activeConversationId && data.conversations.length > 0) {
+          loadConversationMessages(data.conversations[0].id);
+        }
+      } catch (err) {
+        listContainer.innerHTML = '<div style="padding:20px; text-align:center;">Tizimga kiring</div>';
+      }
+    }
+
+    async function loadConversationMessages(convId) {
+      state.activeConversationId = convId;
+      document.getElementById('chatInputBar').style.display = 'flex';
+
+      try {
+        const data = await apiCall(`/conversations/${convId}/messages`, 'GET', null, true);
+        const head = document.getElementById('chatHead');
+        head.innerHTML = `
+          <div style="display:flex; align-items:center; gap:12px;">
+            <img src="${data.otherUser.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80'}" style="width:38px; height:38px; border-radius:50%; object-fit:cover;">
+            <div>
+              <div style="font-weight:700; color:var(--secondary); font-size:15px;">${data.otherUser.name} ${data.otherUser.surname || ''}</div>
+              <div style="font-size:12px; color:var(--primary); font-weight:600; display:flex; align-items:center; gap:4px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.6 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+                <span>${data.car.brand} ${data.car.model}</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button class="btn-secondary" onclick="openCarDetail(${data.car.id})" style="padding:6px 12px; font-size:12px;">Mashina tafsiloti</button>
+          </div>
+        `;
+
+        const messagesBox = document.getElementById('chatMessages');
+        if (data.messages.length === 0) {
+          messagesBox.innerHTML = '<div style="text-align:center; padding:30px; color:var(--text-muted); font-size:14px;">Suhbatni boshlang...</div>';
+        } else {
+          messagesBox.innerHTML = data.messages.map(m => {
+            const isMe = m.sender_id === state.user.id;
+            return `
+              <div class="msg-bubble ${isMe ? 'me' : 'other'}">
+                ${m.image_url ? `<img src="${m.image_url}" style="max-width:240px; border-radius:8px; margin-bottom:6px; display:block;">` : ''}
+                <div>${m.text}</div>
+                <div class="msg-time">${new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+              </div>
+            `;
+          }).join('');
+        }
+        messagesBox.scrollTop = messagesBox.scrollHeight;
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function sendChatMessage() {
+      const input = document.getElementById('chatTextInput');
+      const text = input.value.trim();
+      if (!text) return;
+      if (!state.activeConversationId) return;
+
+      input.value = '';
+      try {
+        await apiCall(`/conversations/${state.activeConversationId}/messages`, 'POST', { text }, true);
+        loadConversationMessages(state.activeConversationId);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleChatImageUpload(input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const uploadRes = await apiCall('/upload', 'POST', { base64Data: reader.result }, true);
+          await apiCall(`/conversations/${state.activeConversationId}/messages`, 'POST', {
+            text: '',
+            image_url: uploadRes.url
+          }, true);
+          loadConversationMessages(state.activeConversationId);
+        } catch (err) {
+          showToast('Rasm yuklashda xatolik', 'error');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ==========================================
+    // NOTIFICATIONS
+    // ==========================================
+    async function openNotificationsModal() {
+      if (!state.token) {
+        openAuthModal('login');
+        return;
+      }
+      openModal('notifModal');
+      const container = document.getElementById('notifListBody');
+      container.innerHTML = '<div style="text-align:center; padding:20px;">Yuklanmoqda...</div>';
+
+      try {
+        const data = await apiCall('/notifications', 'GET', null, true);
+        if (!data.notifications || data.notifications.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">🔔</div>
+              <div class="empty-state-title">Bildirishnomalar yo‘q</div>
+              <div class="empty-state-desc">Yangi buyurtmalar va xabarlar haqida bildirishnomalar shu yerda chiqadi.</div>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = data.notifications.map(n => `
+          <div style="padding:14px; border-bottom:1px solid var(--border); background:${n.is_read ? '#ffffff' : '#f0fdf4'}; display:flex; justify-content:space-between; align-items:start; gap:10px;">
+            <div>
+              <div style="font-weight:700; font-size:14px; color:var(--secondary);">${n.title}</div>
+              <div style="font-size:13px; color:var(--text-muted); margin-top:2px;">${n.message}</div>
+              <div style="font-size:11px; color:#94a3b8; margin-top:4px;">${new Date(n.created_at).toLocaleString()}</div>
+            </div>
+            ${!n.is_read ? `<button style="font-size:11px; color:var(--primary); font-weight:700;" onclick="markNotifRead(${n.id})">O‘qildi</button>` : ''}
+          </div>
+        `).join('');
+
+        // Update badge
+        document.getElementById('notifBadge').style.display = 'none';
+      } catch (err) {
+        container.innerHTML = '<div style="text-align:center; padding:20px;">Xatolik yuz berdi</div>';
+      }
+    }
+
+    async function markNotifRead(id) {
+      await apiCall(`/notifications/${id}/read`, 'POST', null, true);
+      openNotificationsModal();
+    }
+
+    // ==========================================
+    // FAVORITES VIEW
+    // ==========================================
+    async function loadFavorites() {
+      const container = document.getElementById('favoritesGrid');
+      try {
+        const data = await apiCall('/favorites', 'GET', null, true);
+        if (!data.cars || data.cars.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;">
+              <div class="empty-state-icon">❤️</div>
+              <div class="empty-state-title">Yoqtirgan mashinalaringiz shu yerda chiqadi</div>
+              <div class="empty-state-desc">Mashina kartasidagi yurakcha belgisini bosib sevimli ro‘yxatingizga qo‘shing.</div>
+              <button class="btn-primary" onclick="navigateTo('cars')">Mashinalarni ko‘rish</button>
+            </div>
+          `;
+          return;
+        }
+        renderCarGrid('favoritesGrid', data.cars);
+      } catch (err) {
+        container.innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1;">
+            <div class="empty-state-icon">🔒</div>
+            <div class="empty-state-title">Tizimga kiring</div>
+            <div class="empty-state-desc">Sevimlilaringizni ko‘rish uchun tizimga kiring.</div>
+            <button class="btn-primary" onclick="openAuthModal('login')">Kirish</button>
+          </div>
+        `;
+      }
+    }
+
+    // ==========================================
+    // PROFILE MANAGEMENT
+    // ==========================================
+    async function loadProfile() {
+      try {
+        const data = await apiCall('/profile', 'GET', null, true);
+        const u = data.user;
+        document.getElementById('profileFullName').querySelector('span:first-child').textContent = `${u.name} ${u.surname || ''}`;
+        document.getElementById('profileEmail').textContent = u.email;
+        document.getElementById('profileAvatarImg').src = u.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80';
+        document.getElementById('statCarsCount').textContent = u.stats.cars;
+        document.getElementById('statRentalsCount').textContent = u.stats.rentals;
+
+        loadMyCars();
+      } catch (err) {
+        navigateTo('home');
+        openAuthModal('login');
+      }
+    }
+
+    async function loadMyCars() {
+      const container = document.getElementById('myCarsGrid');
+      try {
+        const data = await apiCall('/my-cars', 'GET', null, true);
+        if (!data.cars || data.cars.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;">
+              <div class="empty-state-icon">🚗</div>
+              <div class="empty-state-title">Hali mashina qo‘shmagansiz</div>
+              <div class="empty-state-desc">O‘z avtomobilingizni ijaraga berib qo‘shimcha daromad oling!</div>
+              <button class="btn-primary" onclick="handleAddCarClick()">+ Mashinamni ijaraga berish</button>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = data.cars.map(c => `
+          <div class="car-card">
+            <div class="car-card-image-wrap">
+              <img src="${c.main_image}" class="car-card-img" alt="Car">
+              <span class="car-badge-year">${c.year}</span>
+            </div>
+            <div class="car-card-body">
+              <h3 class="car-card-title">${c.brand} ${c.model}</h3>
+              <div style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">
+                Holat: <b style="color:var(--primary);">${c.status}</b>
+                ${c.pending_requests > 0 ? ` • <span style="color:#f59e0b; font-weight:700;">${c.pending_requests} ta yangi so‘rov!</span>` : ''}
+              </div>
+              <div class="car-card-footer">
+                <span class="car-price">${c.daily_price.toLocaleString()} so‘m / kun</span>
+                <button class="btn-secondary" onclick="deleteMyCar(${c.id})" style="color:var(--danger); padding:6px 10px; font-size:12px;">O‘chirish</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function deleteMyCar(id) {
+      if (!confirm('Ushbu mashinani platformadan o‘chirmoqchimisiz?')) return;
+      try {
+        await apiCall(`/cars/${id}`, 'DELETE', null, true);
+        showToast('Mashina o‘chirildi');
+        loadMyCars();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleAvatarFileSelect(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        showToast('Iltimos, rasm faylini tanlang (JPG, PNG, WEBP)', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async function(evt) {
+        const base64Data = evt.target.result;
+        const preview = document.getElementById('previewAvatarImg');
+        if (preview) preview.src = base64Data;
+
+        try {
+          showToast('Rasm yuklanmoqda...', 'info');
+          const res = await apiCall('/upload', 'POST', {
+            base64Data,
+            fileName: file.name
+          }, true);
+          document.getElementById('editAvatarUrl').value = res.url;
+          showToast('Rasm tanlandi! ✅');
+        } catch (err) {
+          document.getElementById('editAvatarUrl').value = base64Data;
+          showToast('Rasm tanlandi! ✅');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function openEditProfileModal() {
+      if (!state.user) return;
+      document.getElementById('editName').value = state.user.name || '';
+      document.getElementById('editSurname').value = state.user.surname || '';
+      document.getElementById('editPhone').value = state.user.phone || '';
+      const avatar = state.user.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80';
+      document.getElementById('editAvatarUrl').value = avatar;
+      const preview = document.getElementById('previewAvatarImg');
+      if (preview) preview.src = avatar;
+      openModal('profileEditModal');
+    }
+
+    async function handleProfileEditSubmit(e) {
+      e.preventDefault();
+      const body = {
+        name: document.getElementById('editName').value,
+        surname: document.getElementById('editSurname').value,
+        phone: document.getElementById('editPhone').value,
+        avatar_url: document.getElementById('editAvatarUrl').value
+      };
+      try {
+        const res = await apiCall('/profile', 'PUT', body, true);
+        state.user = res.user;
+        closeModal('profileEditModal');
+        showToast(res.message);
+        loadProfile();
+        renderAuthHeader();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // ==========================================
+    // 8-STEP CAR ADDITION WIZARD
+    // ==========================================
+    function handleAddCarClick() {
+      if (!state.token) {
+        openAuthModal('login');
+        return;
+      }
+      if (state.user && !state.user.email_verified) {
+        showToast('Avval emailingizni tasdiqlang.', 'error');
+        pendingVerifyEmail = state.user.email;
+        document.getElementById('verifyEmailTarget').textContent = state.user.email;
+        openModal('authModal');
+        switchAuthMode('verify');
+        return;
+      }
+
+      state.wizardStep = 1;
+      state.wizardPhotos = [];
+      updateWizardUI();
+      navigateTo('add-car');
+    }
+
+    function changeWizardStep(delta) {
+      const newStep = state.wizardStep + delta;
+
+      // Validate before going forward
+      if (delta > 0) {
+        if (state.wizardStep === 1 && state.wizardPhotos.length < 3) {
+          showToast('Iltimos, kamida 3 ta rasm yuklang (yoki "Demo rasmlar" tugmasini bosing).', 'error');
+          return;
+        }
+        if (state.wizardStep === 2) {
+          const model = document.getElementById('carModel').value.trim();
+          if (!model) {
+            showToast('Mashina modelini kiriting.', 'error');
+            return;
+          }
+        }
+        if (state.wizardStep === 5) {
+          const price = document.getElementById('carDailyPrice').value;
+          if (!price || price <= 0) {
+            showToast('Kunlik narxni to‘g‘ri kiriting.', 'error');
+            return;
+          }
+        }
+      }
+
+      if (newStep === 8) {
+        renderWizardPreview();
+      }
+
+      if (newStep > 8) {
+        submitCarListing();
+        return;
+      }
+
+      state.wizardStep = newStep;
+      updateWizardUI();
+    }
+
+    function updateWizardUI() {
+      for (let i = 1; i <= 8; i++) {
+        const stepEl = document.getElementById(`wizard-step-${i}`);
+        const progEl = document.getElementById(`prog-${i}`);
+        if (stepEl) stepEl.classList.toggle('active', i === state.wizardStep);
+        if (progEl) {
+          progEl.classList.toggle('active', i === state.wizardStep);
+          progEl.classList.toggle('completed', i < state.wizardStep);
+        }
+      }
+
+      document.getElementById('btnWizardPrev').style.visibility = state.wizardStep === 1 ? 'hidden' : 'visible';
+      const nextBtn = document.getElementById('btnWizardNext');
+      if (state.wizardStep === 8) {
+        nextBtn.innerHTML = '🚀 E‘lonni joylash';
+        nextBtn.style.background = '#15803d';
+      } else {
+        nextBtn.innerHTML = 'Davom etish →';
+        nextBtn.style.background = 'var(--primary)';
+      }
+    }
+
+    function renderPhotoSlots() {
+      const grid = document.getElementById('photoUploadGrid');
+      grid.innerHTML = state.wizardPhotos.map((url, idx) => `
+        <div class="photo-slot ${idx === 0 ? 'is-main' : ''}" onclick="setMainPhoto(${idx})">
+          <img src="${url}" alt="Uploaded photo">
+          <button class="delete-photo" onclick="deletePhoto(event, ${idx})">✕</button>
+        </div>
+      `).join('');
+
+      // Add placeholder slots if less than 8
+      if (state.wizardPhotos.length < 8) {
+        grid.innerHTML += `
+          <label class="photo-slot" title="Rasm qo‘shish">
+            <span style="font-size:24px; color:#94a3b8;">+</span>
+            <span style="font-size:12px; color:#94a3b8;">Rasm qo‘shish</span>
+            <input type="file" accept="image/*" style="display:none;" onchange="handleCarImagesUpload(this)">
+          </label>
+        `;
+      }
+    }
+
+    async function handleCarImagesUpload(input) {
+      if (!input.files) return;
+      const files = Array.from(input.files);
+      for (const file of files) {
+        if (state.wizardPhotos.length >= 8) break;
+        const reader = new FileReader();
+        reader.onload = async () => {
+          try {
+            const res = await apiCall('/upload', 'POST', { base64Data: reader.result }, true);
+            state.wizardPhotos.push(res.url);
+            renderPhotoSlots();
+          } catch (e) {
+            showToast('Rasm yuklashda xato', 'error');
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    let pinterestAllPhotos = [];
+    let selectedPinterestUrls = new Set();
+
+    async function openPinterestPickerModal() {
+      openModal('pinterestModal');
+      const grid = document.getElementById('pinterestPhotosGrid');
+      grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px;">Pinterest rasmlari yuklanmoqda...</div>';
+      selectedPinterestUrls.clear();
+      updateSelectedPinterestCount();
+
+      try {
+        const res = await apiCall('/pinterest-photos', 'GET');
+        pinterestAllPhotos = res.photos || [];
+        grid.innerHTML = pinterestAllPhotos.map((url, idx) => `
+          <div class="pinterest-item" onclick="togglePinterestSelect('${url}', this)" style="position:relative; height:105px; border-radius:8px; overflow:hidden; border:2px solid transparent; cursor:pointer; background:#f1f5f9;">
+            <img src="${url}" style="width:100%; height:100%; object-fit:cover;">
+            <div class="pin-check" style="display:none; position:absolute; top:6px; right:6px; background:#16a34a; color:white; width:22px; height:22px; border-radius:50%; align-items:center; justify-content:center; font-size:12px; font-weight:bold; box-shadow:0 2px 4px rgba(0,0,0,0.2);">✓</div>
+          </div>
+        `).join('');
+      } catch (e) {
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:20px; color:red;">Rasmlarni yuklashda xatolik yuz berdi.</div>';
+      }
+    }
+
+    function togglePinterestSelect(url, el) {
+      const check = el.querySelector('.pin-check');
+      if (selectedPinterestUrls.has(url)) {
+        selectedPinterestUrls.delete(url);
+        el.style.borderColor = 'transparent';
+        check.style.display = 'none';
+      } else {
+        if (selectedPinterestUrls.size >= 8) {
+          showToast('Ko‘pi bilan 8 ta rasm tanlash mumkin.', 'error');
+          return;
+        }
+        selectedPinterestUrls.add(url);
+        el.style.borderColor = '#16a34a';
+        check.style.display = 'flex';
+      }
+      updateSelectedPinterestCount();
+    }
+
+    function updateSelectedPinterestCount() {
+      const countEl = document.getElementById('selectedPinterestCount');
+      if (!countEl) return;
+      const count = selectedPinterestUrls.size;
+      countEl.textContent = `Tanlandi: ${count} ta (${count < 3 ? 'kamida 3 ta kerak' : 'yetarli'})`;
+      countEl.style.color = count >= 3 ? '#16a34a' : 'var(--secondary)';
+    }
+
+    function confirmPinterestSelection() {
+      if (selectedPinterestUrls.size < 3) {
+        showToast('Iltimos, kamida 3 ta rasm tanlang.', 'error');
+        return;
+      }
+      state.wizardPhotos = Array.from(selectedPinterestUrls);
+      renderPhotoSlots();
+      closeModal('pinterestModal');
+      showToast(`${selectedPinterestUrls.size} ta Pinterest rasmi muvaffaqiyatli qo‘shildi! 🎉`);
+    }
+
+    function insertSamplePhotos() {
+      state.wizardPhotos = [
+        "https://i.pinimg.com/736x/7a/2e/76/7a2e76dbc30dd0fc0bb9b155a41ef725.jpg",
+        "https://i.pinimg.com/736x/20/52/83/2052830dd25568deb458e4aa9996ac10.jpg",
+        "https://i.pinimg.com/736x/04/36/b0/0436b05303daa36b9e53f2e2ad5fd271.jpg",
+        "https://i.pinimg.com/736x/12/65/b3/1265b3fcbb7c43e91c5f5bad92db8ddb.jpg"
+      ];
+      renderPhotoSlots();
+      showToast('4 ta yuqori sifatli Pinterest avtomobil rasmlari yuklandi!');
+    }
+
+    function setMainPhoto(idx) {
+      if (idx === 0) return;
+      const selected = state.wizardPhotos.splice(idx, 1)[0];
+      state.wizardPhotos.unshift(selected);
+      renderPhotoSlots();
+      showToast('Asosiy rasm o‘zgartirildi');
+    }
+
+    function deletePhoto(e, idx) {
+      e.stopPropagation();
+      state.wizardPhotos.splice(idx, 1);
+      renderPhotoSlots();
+    }
+
+    function renderWizardPreview() {
+      const card = document.getElementById('wizardPreviewCard');
+      const brand = document.getElementById('carBrand').value;
+      const model = document.getElementById('carModel').value;
+      const year = document.getElementById('carYear').value;
+      const price = Number(document.getElementById('carDailyPrice').value || 0).toLocaleString();
+      const city = document.getElementById('carCity').value;
+      const trans = document.getElementById('carTransmission').value;
+      const fuel = document.getElementById('carFuelType').value;
+
+      card.innerHTML = `
+        <div style="display:flex; gap:16px; align-items:center;">
+          <img src="${state.wizardPhotos[0] || ''}" style="width:140px; height:95px; border-radius:8px; object-fit:cover;">
+          <div>
+            <h4 style="font-size:18px; font-weight:800; color:var(--secondary);">${brand} ${model} (${year})</h4>
+            <div style="font-size:13px; color:var(--text-muted); margin:4px 0;">📍 ${city} • ${trans} • ${fuel}</div>
+            <div style="font-size:16px; font-weight:800; color:var(--primary);">${price} so‘m / kun</div>
+            <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Yuklangan rasmlar: ${state.wizardPhotos.length} ta</div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function submitCarListing() {
+      const nextBtn = document.getElementById('btnWizardNext');
+      nextBtn.disabled = true;
+      nextBtn.textContent = 'Joylashtirilmoqda...';
+
+      const payload = {
+        brand: document.getElementById('carBrand').value,
+        model: document.getElementById('carModel').value,
+        year: Number(document.getElementById('carYear').value),
+        color: document.getElementById('carColor').value,
+        body_type: document.getElementById('carBodyType').value,
+        transmission: document.getElementById('carTransmission').value,
+        fuel_type: document.getElementById('carFuelType').value,
+        seats: Number(document.getElementById('carSeats').value),
+        mileage: Number(document.getElementById('carMileage').value),
+        region: document.getElementById('carRegion').value,
+        city: document.getElementById('carCity').value,
+        pickup_address: document.getElementById('carPickupAddress').value,
+        daily_price: Number(document.getElementById('carDailyPrice').value),
+        deposit: Number(document.getElementById('carDeposit').value),
+        min_rental_days: Number(document.getElementById('carMinDays').value),
+        min_age: Number(document.getElementById('carMinAge').value),
+        min_experience: Number(document.getElementById('carMinExp').value),
+        daily_km_limit: Number(document.getElementById('carKmLimit').value),
+        smoking_allowed: document.getElementById('carSmoking').checked,
+        pets_allowed: document.getElementById('carPets').checked,
+        extra_rules: document.getElementById('carExtraRules').value,
+        images: state.wizardPhotos
+      };
+
+      try {
+        const res = await apiCall('/cars', 'POST', payload, true);
+        showToast('Mashinangiz muvaffaqiyatli joylashtirildi!');
+        navigateTo('cars');
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        nextBtn.disabled = false;
+        nextBtn.textContent = 'Davom etish →';
+      }
+    }
+
+    // ==========================================
+    // INITIALIZATION ON PAGE LOAD
+    // ==========================================
+    window.addEventListener('DOMContentLoaded', () => {
+      checkAuthSession();
+      loadHomeCars();
+    });
+  </script>
+</body>
+</html>
